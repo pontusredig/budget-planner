@@ -35,5 +35,10 @@ public class ExpenseService {
     }
 
 
+    public Expense getExpenseById(Long id) {
+        return expenseRepository.getOne(id);
+    }
+
+
 
 }
