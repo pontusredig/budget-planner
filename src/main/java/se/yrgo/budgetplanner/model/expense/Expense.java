@@ -26,4 +26,7 @@ public class Expense {
         this.name = name;
         this.date = date;
     }
+
+    public Expense() {
+    }
 }
