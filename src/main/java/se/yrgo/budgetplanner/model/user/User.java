@@ -1,4 +1,4 @@
-package se.yrgo.budgetplanner.user;
+package se.yrgo.budgetplanner.model.user;
 
 import lombok.Data;
 
@@ -12,7 +12,7 @@ import java.util.Date;
 @Entity
 public class User {
     @Id
-    @GeneratedValue(strategy=GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
     private String firstName;
     private String lastName;

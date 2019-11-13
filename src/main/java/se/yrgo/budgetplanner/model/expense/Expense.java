@@ -1,4 +1,4 @@
-package se.yrgo.budgetplanner.expenses;
+package se.yrgo.budgetplanner.model.expense;
 
 import lombok.Data;
 

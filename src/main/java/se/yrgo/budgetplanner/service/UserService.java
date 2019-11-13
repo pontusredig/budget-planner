@@ -1,7 +1,9 @@
-package se.yrgo.budgetplanner.user;
+package se.yrgo.budgetplanner.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import se.yrgo.budgetplanner.model.user.User;
+import se.yrgo.budgetplanner.repository.UserRepository;
 
 @Service
 public class UserService {
