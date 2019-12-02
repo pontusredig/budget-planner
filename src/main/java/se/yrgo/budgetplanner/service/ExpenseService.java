@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import se.yrgo.budgetplanner.model.expense.Expense;
 import se.yrgo.budgetplanner.repository.ExpenseRepository;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -37,6 +38,14 @@ public class ExpenseService {
 
     public Expense getExpenseById(Long id) {
         return expenseRepository.getOne(id);
+    }
+
+    public List<Expense> getExpensesByDate(LocalDate date) {
+        return expenseRepository.findAllByDate(date);
+    }
+
+    public List<Expense> getExpensesBetweenDates(LocalDate start, LocalDate end) {
+        return expenseRepository.findAllByDateBetween(start, end);
     }
 
 

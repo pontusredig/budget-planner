@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.*;
 import se.yrgo.budgetplanner.model.expense.Expense;
 import se.yrgo.budgetplanner.service.ExpenseService;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -35,6 +36,16 @@ public class ExpenseController {
     Expense updateExpense(@RequestBody Expense expense, @PathVariable Long id) {
         expenseService.updateExpense(expense, id);
         return expense;
+    }
+
+    @GetMapping("/getbydate/{date}")
+    List<Expense> getExpenseByDate(@PathVariable LocalDate date) {
+        return expenseService.getExpensesByDate(date);
+    }
+
+    @GetMapping("/getbetweendates/{start}/{end}")
+    List<Expense> getExpenseByDateBetween(@PathVariable LocalDate start, @PathVariable LocalDate end) {
+        return expenseService.getExpensesBetweenDates(start, end);
     }
 
 
