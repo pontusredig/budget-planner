@@ -20,6 +20,7 @@ public class IncomeService {
 
     public void deleteIncome(Long id) {
         Income deleteThisIncome = incomeRepository.getOne(id);
+        incomeRepository.delete(deleteThisIncome);
     }
 
     public List<Income> getAllIncomes() {
