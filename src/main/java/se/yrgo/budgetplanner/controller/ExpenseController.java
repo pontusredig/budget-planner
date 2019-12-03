@@ -15,36 +15,36 @@ public class ExpenseController {
     @Autowired
     ExpenseService expenseService;
 
-    @PostMapping("/addexpense")
+    @PostMapping("/expense/add")
     Expense addExpense(@RequestBody Expense expense) {
         expenseService.saveExpense(expense);
         return expense;
     }
 
-    @DeleteMapping("/deleteexpense/{id}")
+    @DeleteMapping("/expense/delete/{id}")
     void deleteExpense(@PathVariable Long id) {
         expenseService.deleteExpense(id);
         System.out.println("Deleted expense.");
     }
 
-    @GetMapping("/getallexpenses")
+    @GetMapping("/expense/getall")
     List<Expense> getAllExpenses() {
         return expenseService.getAllExpenses();
     }
 
-    @PutMapping("/updateexpense/{id}")
+    @PutMapping("/expense/update/{id}")
     Expense updateExpense(@RequestBody Expense expense, @PathVariable Long id) {
         expenseService.updateExpense(expense, id);
         return expense;
     }
 
-    @GetMapping("/getbydate/{date}")
-    List<Expense> getExpenseByDate(@PathVariable LocalDate date) {
+    @GetMapping("/expense/getbydate/{date}")
+    List<Expense> getExpensesByDate(@PathVariable LocalDate date) {
         return expenseService.getExpensesByDate(date);
     }
 
-    @GetMapping("/getbetweendates/{start}/{end}")
-    List<Expense> getExpenseByDateBetween(@PathVariable LocalDate start, @PathVariable LocalDate end) {
+    @GetMapping("/expense/getbetweendates/{start}/{end}")
+    List<Expense> getExpensesBetweenDates(@PathVariable LocalDate start, @PathVariable LocalDate end) {
         return expenseService.getExpensesBetweenDates(start, end);
     }
 
