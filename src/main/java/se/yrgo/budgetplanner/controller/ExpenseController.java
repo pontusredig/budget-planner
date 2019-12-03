@@ -4,6 +4,7 @@ package se.yrgo.budgetplanner.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import se.yrgo.budgetplanner.model.expense.Expense;
+import se.yrgo.budgetplanner.model.expense.ExpenseStatus;
 import se.yrgo.budgetplanner.service.ExpenseService;
 
 import java.time.LocalDate;
@@ -46,6 +47,11 @@ public class ExpenseController {
     @GetMapping("/expense/getbetweendates/{start}/{end}")
     List<Expense> getExpensesBetweenDates(@PathVariable LocalDate start, @PathVariable LocalDate end) {
         return expenseService.getExpensesBetweenDates(start, end);
+    }
+
+    @GetMapping("/expense/getbystatus/{status}")
+    List<Expense> getExpensesByStatus(@PathVariable ExpenseStatus status) {
+        return expenseService.getExpensesByStatus(status);
     }
 
 

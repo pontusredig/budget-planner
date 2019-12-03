@@ -47,7 +47,4 @@ public class IncomeController {
         return incomeService.getIncomesBetweenDates(start, end);
     }
 
-
-
-
 }

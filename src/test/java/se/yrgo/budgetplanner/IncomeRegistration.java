@@ -47,7 +47,7 @@ public class IncomeRegistration {
         HttpEntity<Income> request = new HttpEntity<>(testIncome);
 
         ResponseEntity<Income> result = (new RestTemplate())
-                .postForEntity("http://localhost:" + port + "/addincome", request, Income.class);
+                .postForEntity("http://localhost:" + port + "/income/add", request, Income.class);
 
         Income verifyThisIncome = incomeService.getIncomeById(1L);
 

@@ -18,12 +18,19 @@ public class Expense {
     private String name;
     @Column(columnDefinition = "DATE")
     private LocalDate date;
+    @Column(columnDefinition = "DATE")
+    private LocalDate dueDate;
+    private ExpenseStatus expenseStatus;
 
-    public Expense(BigDecimal amount, ExpenseCategory expenseCategory, String name, LocalDate date) {
+
+    public Expense(BigDecimal amount, ExpenseCategory expenseCategory, String name, LocalDate date, LocalDate dueDate,
+                   ExpenseStatus expenseStatus) {
         this.amount = amount;
         this.expenseCategory = expenseCategory;
         this.name = name;
         this.date = date;
+        this.dueDate = dueDate;
+        this.expenseStatus = expenseStatus;
     }
 
     public Expense() {
