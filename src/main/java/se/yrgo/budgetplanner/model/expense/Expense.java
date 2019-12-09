@@ -2,7 +2,10 @@ package se.yrgo.budgetplanner.model.expense;
 
 import lombok.Data;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
@@ -16,19 +19,16 @@ public class Expense {
     private BigDecimal amount;
     private ExpenseCategory expenseCategory;
     private String name;
-    @Column(columnDefinition = "DATE")
-    private LocalDate date;
-    @Column(columnDefinition = "DATE")
+    private LocalDate addedOn;
     private LocalDate dueDate;
     private ExpenseStatus expenseStatus;
 
 
-    public Expense(BigDecimal amount, ExpenseCategory expenseCategory, String name, LocalDate date, LocalDate dueDate,
+    public Expense(BigDecimal amount, ExpenseCategory expenseCategory, String name, LocalDate dueDate,
                    ExpenseStatus expenseStatus) {
         this.amount = amount;
         this.expenseCategory = expenseCategory;
         this.name = name;
-        this.date = date;
         this.dueDate = dueDate;
         this.expenseStatus = expenseStatus;
     }

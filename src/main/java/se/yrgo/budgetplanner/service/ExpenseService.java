@@ -16,6 +16,7 @@ public class ExpenseService {
     ExpenseRepository expenseRepository;
 
     public Expense saveExpense(Expense expense) {
+        expense.setAddedOn(LocalDate.now());
         expenseRepository.save(expense);
         return expense;
     }

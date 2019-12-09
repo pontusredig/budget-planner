@@ -9,40 +9,41 @@ import java.time.LocalDate;
 import java.util.List;
 
 @RestController
+@RequestMapping("/income")
 public class IncomeController {
 
     @Autowired
     IncomeService incomeService;
 
-    @PostMapping("/income/add")
+    @PostMapping("/add")
     Income addIncome(@RequestBody Income income) {
         incomeService.saveIncome(income);
         return income;
     }
 
-    @DeleteMapping("/income/delete/{id}")
+    @DeleteMapping("/delete/{id}")
     void deleteIncome(@PathVariable Long id) {
         incomeService.deleteIncome(id);
         System.out.println("Deleted income.");
     }
 
-    @GetMapping("/income/getall")
+    @GetMapping("/getall")
     List<Income> getAllIncomes() {
         return incomeService.getAllIncomes();
     }
 
-    @PutMapping("/income/update/{id}")
+    @PutMapping("/update/{id}")
     Income updateIncome(@RequestBody Income income, @PathVariable Long id) {
         incomeService.updateIncome(income, id);
         return income;
     }
 
-    @GetMapping("/income/getbydate/{date}")
+    @GetMapping("/getbydate/{date}")
     List<Income> getIncomesByDate(@PathVariable LocalDate date) {
         return incomeService.getIncomesByDate(date);
     }
 
-    @GetMapping("/income/getbetweendates/{start}/{end}")
+    @GetMapping("/getbetweendates/{start}/{end}")
     List<Income> getIncomesByDateBetween(@PathVariable LocalDate start, @PathVariable LocalDate end) {
         return incomeService.getIncomesBetweenDates(start, end);
     }

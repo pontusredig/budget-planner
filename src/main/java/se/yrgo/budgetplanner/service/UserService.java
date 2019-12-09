@@ -11,13 +11,14 @@ import java.util.Optional;
 @Service
 public class UserService {
 
+
     @Autowired
     UserRepository userRepository;
 
     public User saveUser(User user) {
 
-       User newUser= userRepository.save(user);
-        return newUser;
+       userRepository.save(user);
+       return user;
     }
 
     public void removeUserById(Long id){
