@@ -19,13 +19,12 @@ public class Income {
     private BigDecimal amount;
     private IncomeCategory incomeCategory;
     private String name;
-    private LocalDate date;
+    private LocalDate addedOn;
 
-    public Income(BigDecimal amount, IncomeCategory incomeCategory, String name, LocalDate date) {
+    public Income(BigDecimal amount, IncomeCategory incomeCategory, String name) {
         this.amount = amount;
         this.incomeCategory = incomeCategory;
         this.name = name;
-        this.date = date;
     }
 
     public Income() {

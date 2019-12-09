@@ -15,6 +15,7 @@ public class IncomeService {
     IncomeRepository incomeRepository;
 
     public Income saveIncome(Income income) {
+        income.setAddedOn(LocalDate.now());
         incomeRepository.save(income);
         return income;
     }

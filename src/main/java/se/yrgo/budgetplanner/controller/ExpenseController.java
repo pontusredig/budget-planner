@@ -11,45 +11,46 @@ import java.time.LocalDate;
 import java.util.List;
 
 @RestController
+@RequestMapping("/expense")
 public class ExpenseController {
 
     @Autowired
     ExpenseService expenseService;
 
-    @PostMapping("/expense/add")
+    @PostMapping("/add")
     Expense addExpense(@RequestBody Expense expense) {
         expenseService.saveExpense(expense);
         return expense;
     }
 
-    @DeleteMapping("/expense/delete/{id}")
+    @DeleteMapping("/delete/{id}")
     void deleteExpense(@PathVariable Long id) {
         expenseService.deleteExpense(id);
         System.out.println("Deleted expense.");
     }
 
-    @GetMapping("/expense/getall")
+    @GetMapping("/getall")
     List<Expense> getAllExpenses() {
         return expenseService.getAllExpenses();
     }
 
-    @PutMapping("/expense/update/{id}")
+    @PutMapping("/update/{id}")
     Expense updateExpense(@RequestBody Expense expense, @PathVariable Long id) {
         expenseService.updateExpense(expense, id);
         return expense;
     }
 
-    @GetMapping("/expense/getbydate/{date}")
+    @GetMapping("/getbydate/{date}")
     List<Expense> getExpensesByDate(@PathVariable LocalDate date) {
         return expenseService.getExpensesByDate(date);
     }
 
-    @GetMapping("/expense/getbetweendates/{start}/{end}")
+    @GetMapping("/getbetweendates/{start}/{end}")
     List<Expense> getExpensesBetweenDates(@PathVariable LocalDate start, @PathVariable LocalDate end) {
         return expenseService.getExpensesBetweenDates(start, end);
     }
 
-    @GetMapping("/expense/getbystatus/{status}")
+    @GetMapping("/getbystatus/{status}")
     List<Expense> getExpensesByStatus(@PathVariable ExpenseStatus status) {
         return expenseService.getExpensesByStatus(status);
     }
