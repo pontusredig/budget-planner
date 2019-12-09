@@ -4,6 +4,7 @@ package se.yrgo.budgetplanner.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import se.yrgo.budgetplanner.model.expense.Expense;
+import se.yrgo.budgetplanner.model.expense.ExpenseCategory;
 import se.yrgo.budgetplanner.model.expense.ExpenseStatus;
 import se.yrgo.budgetplanner.service.ExpenseService;
 
@@ -53,6 +54,26 @@ public class ExpenseController {
     @GetMapping("/getbystatus/{status}")
     List<Expense> getExpensesByStatus(@PathVariable ExpenseStatus status) {
         return expenseService.getExpensesByStatus(status);
+    }
+
+    @GetMapping("/getbycategory/{category}")
+    List<Expense> getExpensesByCategory(@PathVariable ExpenseCategory category) {
+        return expenseService.getExpensesByCategory(category);
+    }
+
+    @GetMapping("/gettotal")
+    Long getTotal() {
+        return expenseService.getTotal();
+    }
+
+    @GetMapping("/gettotalbystatus/{status}")
+    Long getTotalByStatus(@PathVariable ExpenseStatus status) {
+        return expenseService.getTotalByStatus(status);
+    }
+
+    @GetMapping("/gettotalbycategory/{category}")
+    Long getTotalByCategory(@PathVariable ExpenseCategory category) {
+        return expenseService.getTotalByCategory(category);
     }
 
 

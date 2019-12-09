@@ -9,7 +9,6 @@ import se.yrgo.budgetplanner.service.UserExistsException;
 import se.yrgo.budgetplanner.service.UserNotFoundException;
 import se.yrgo.budgetplanner.service.UserServiceImpl;
 
-import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -43,7 +42,6 @@ public class UserController {
     public User updateUserPassword(@RequestBody User user) throws UserNotFoundException {
         return userService.changePassword(user);
     }
-
 
     @GetMapping("/all")
     public List<User> getUsers(){

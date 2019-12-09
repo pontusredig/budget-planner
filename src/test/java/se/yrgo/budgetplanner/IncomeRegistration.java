@@ -11,6 +11,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.web.client.RestTemplate;
 import se.yrgo.budgetplanner.model.income.Income;
 import se.yrgo.budgetplanner.model.income.IncomeCategory;
+import se.yrgo.budgetplanner.model.income.IncomeStatus;
 import se.yrgo.budgetplanner.service.IncomeService;
 
 import javax.transaction.Transactional;
@@ -28,6 +29,7 @@ public class IncomeRegistration {
     final IncomeCategory CATEGORY = IncomeCategory.SALARY;
     final String NAME = "Overtime";
     final LocalDate DATE = LocalDate.now();
+    final IncomeStatus STATUS = IncomeStatus.EXPENDABLE;
 
     @LocalServerPort
     private int port;
@@ -43,6 +45,7 @@ public class IncomeRegistration {
         testIncome.setIncomeCategory(CATEGORY);
         testIncome.setName(NAME);
         testIncome.setDate(DATE);
+        testIncome.setIncomeStatus(STATUS);
 
         HttpEntity<Income> request = new HttpEntity<>(testIncome);
 
@@ -55,6 +58,7 @@ public class IncomeRegistration {
         assertEquals(verifyThisIncome.getIncomeCategory(), CATEGORY);
         assertEquals(verifyThisIncome.getName(), NAME);
         assertEquals(verifyThisIncome.getDate(), DATE);
+        assertEquals(verifyThisIncome.getIncomeStatus(), STATUS);
 
     }
 

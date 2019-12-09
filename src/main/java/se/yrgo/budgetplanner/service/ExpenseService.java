@@ -3,6 +3,7 @@ package se.yrgo.budgetplanner.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import se.yrgo.budgetplanner.model.expense.Expense;
+import se.yrgo.budgetplanner.model.expense.ExpenseCategory;
 import se.yrgo.budgetplanner.model.expense.ExpenseStatus;
 import se.yrgo.budgetplanner.repository.ExpenseRepository;
 
@@ -16,7 +17,7 @@ public class ExpenseService {
     ExpenseRepository expenseRepository;
 
     public Expense saveExpense(Expense expense) {
-        expense.setAddedOn(LocalDate.now());
+        expense.setDate(LocalDate.now());
         expenseRepository.save(expense);
         return expense;
     }
@@ -52,6 +53,22 @@ public class ExpenseService {
 
     public List<Expense> getExpensesByStatus (ExpenseStatus status) {
         return expenseRepository.findAllByExpenseStatus(status);
+    }
+
+    public List<Expense> getExpensesByCategory (ExpenseCategory category) {
+        return expenseRepository.findAllByExpenseCategory(category);
+    }
+
+    public Long getTotal() {
+        return expenseRepository.totalAmount();
+    }
+
+    public Long getTotalByStatus(ExpenseStatus status) {
+        return expenseRepository.totalAmountByStatus(status);
+    }
+
+    public Long getTotalByCategory(ExpenseCategory category) {
+        return expenseRepository.totalAmountByCategory(category);
     }
 
 

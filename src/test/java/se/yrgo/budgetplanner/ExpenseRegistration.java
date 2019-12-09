@@ -46,8 +46,8 @@ public class ExpenseRegistration {
         testExpense.setExpenseCategory(CATEGORY);
         testExpense.setName(NAME);
         testExpense.setDate(DATE);
-//        testExpense.setDueDate(DUE_DATE);
-//        testExpense.setExpenseStatus(STATUS);
+        testExpense.setDueDate(DUE_DATE);
+        testExpense.setExpenseStatus(STATUS);
 
         HttpEntity<Expense> request = new HttpEntity<>(testExpense);
 
@@ -60,8 +60,8 @@ public class ExpenseRegistration {
         assertEquals(verifyThisExpense.getExpenseCategory(), CATEGORY);
         assertEquals(verifyThisExpense.getName(), NAME);
         assertEquals(verifyThisExpense.getDate(), DATE);
-//        assertEquals(verifyThisExpense.getDueDate(), DUE_DATE);
-//        assertEquals(verifyThisExpense.getExpenseStatus(), STATUS);
+        assertEquals(verifyThisExpense.getDueDate(), DUE_DATE);
+        assertEquals(verifyThisExpense.getExpenseStatus(), STATUS);
 
     }
 

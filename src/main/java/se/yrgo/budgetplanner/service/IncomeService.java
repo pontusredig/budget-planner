@@ -3,6 +3,7 @@ package se.yrgo.budgetplanner.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import se.yrgo.budgetplanner.model.income.Income;
+import se.yrgo.budgetplanner.model.income.IncomeStatus;
 import se.yrgo.budgetplanner.repository.IncomeRepository;
 
 import java.time.LocalDate;
@@ -15,7 +16,7 @@ public class IncomeService {
     IncomeRepository incomeRepository;
 
     public Income saveIncome(Income income) {
-        income.setAddedOn(LocalDate.now());
+        income.setDate(LocalDate.now());
         incomeRepository.save(income);
         return income;
     }
@@ -48,4 +49,15 @@ public class IncomeService {
     public List<Income> getIncomesBetweenDates(LocalDate start, LocalDate end) {
         return incomeRepository.findAllByDateBetween(start, end);
     }
+
+    public Long getTotal() {
+        return incomeRepository.totalAmount();
+    }
+
+    public Long getTotalByStatus(IncomeStatus status) {
+        return incomeRepository.totalAmountByStatus(status);
+    }
+
+
+
 }

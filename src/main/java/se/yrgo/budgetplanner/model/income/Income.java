@@ -1,11 +1,9 @@
 package se.yrgo.budgetplanner.model.income;
 
 import lombok.Data;
+import se.yrgo.budgetplanner.model.user.User;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
@@ -19,7 +17,12 @@ public class Income {
     private BigDecimal amount;
     private IncomeCategory incomeCategory;
     private String name;
-    private LocalDate addedOn;
+    private LocalDate date;
+    @Enumerated(EnumType.STRING)
+    private IncomeStatus incomeStatus;
+    @ManyToOne
+    @JoinColumn
+    private User user;
 
     public Income(BigDecimal amount, IncomeCategory incomeCategory, String name) {
         this.amount = amount;

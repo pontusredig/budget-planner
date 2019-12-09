@@ -3,6 +3,7 @@ package se.yrgo.budgetplanner.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import se.yrgo.budgetplanner.model.income.Income;
+import se.yrgo.budgetplanner.model.income.IncomeStatus;
 import se.yrgo.budgetplanner.service.IncomeService;
 
 import java.time.LocalDate;
@@ -47,5 +48,16 @@ public class IncomeController {
     List<Income> getIncomesByDateBetween(@PathVariable LocalDate start, @PathVariable LocalDate end) {
         return incomeService.getIncomesBetweenDates(start, end);
     }
+
+    @GetMapping("/gettotal")
+    Long getTotal() {
+        return incomeService.getTotal();
+    }
+
+    @GetMapping("/gettotalbystatus/{status}")
+    Long getTotalByStatus(@PathVariable IncomeStatus status) {
+        return incomeService.getTotalByStatus(status);
+    }
+
 
 }
