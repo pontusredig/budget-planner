@@ -1,47 +1,19 @@
 package se.yrgo.budgetplanner.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 import se.yrgo.budgetplanner.model.user.User;
-import se.yrgo.budgetplanner.repository.UserRepository;
 
 import java.util.List;
-import java.util.Optional;
 
-@Service
-public class UserService {
+public interface UserService {
+    User registerUser(User user) throws UserExistsException;
 
-    @Autowired
-    UserRepository userRepository;
+    void removeUserById(Long id) throws UserNotFoundException;
 
-    public User saveUser(User user) {
+    User updateProfileById(Long id, User user) throws UserNotFoundException;
+    User updateProfile(User user) throws UserNotFoundException;
 
-       User newUser= userRepository.save(user);
-        return newUser;
-    }
+    List<User> getAllUsers();
+    User getUserById(Long id) throws UserNotFoundException;
+    User getUserByEmail(String email) throws UserNotFoundException;
 
-    public void removeUserById(Long id){
-        userRepository.deleteById(id);
-    }
-
-    public void update(Long id, User user){
-        Optional<User> foundUser = userRepository.findById(id);
-        user.setId(id);
-        userRepository.save(user);
-    }
-
-    public List<User> getAllUsers(){
-        return userRepository.findAll();
-    }
-
-    public User getUserById(Long id){
-        Optional<User> user = userRepository.findById(id);
-        return user.get();
-    }
-
-    public User getUserByEmail(String email) {
-       User user = userRepository.findByEmail(email);
-//        List<User> users = userRepository.findByEmail(email);
-        return user;
-    }
 }
