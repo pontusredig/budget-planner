@@ -16,17 +16,13 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    private String firstName;
-    private String lastName;
     private String email;
     private String password;
     private LocalDate creationDate;
     private LocalDate lastModifiedDate;
 
 
-    public User(String firstName, String lastName, String email, String password, LocalDate creationDate, LocalDate lastModifiedDate) {
-        this.firstName = firstName;
-        this.lastName = lastName;
+    public User(String email, String password, LocalDate creationDate, LocalDate lastModifiedDate) {
         this.email = email;
         this.password = password;
         this.creationDate = creationDate;

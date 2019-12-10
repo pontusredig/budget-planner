@@ -15,6 +15,9 @@ public interface ExpenseRepository extends JpaRepository<Expense, Long> {
 
     List<Expense> findAllByDate(LocalDate date);
 
+    @Query("select exp from Expense exp where exp.user.email = ?1")
+    List<Expense> findAllByUsername(String username);
+
     List<Expense> findAllByDateBetween(LocalDate start, LocalDate end);
 
     List<Expense> findAllByExpenseStatus(ExpenseStatus status);

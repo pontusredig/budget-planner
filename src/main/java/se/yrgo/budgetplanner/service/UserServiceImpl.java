@@ -5,7 +5,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import se.yrgo.budgetplanner.model.user.User;
 import se.yrgo.budgetplanner.repository.UserRepository;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import javax.transaction.Transactional;
 import java.time.LocalDate;
@@ -80,21 +79,14 @@ public class UserServiceImpl implements UserService {
         }
     }
 
-    public User getUserByEmail(String email) throws UserNotFoundException {
-        Optional<User> foundUser = Optional.ofNullable(userRepository.findByEmail(email));
-        if (foundUser.isPresent()) {
-            return foundUser.get();
-        } else {
-            throw new UserNotFoundException();
-        }
+    public User getUserByEmail(String email) {
+        return userRepository.findByEmail(email);
     }
 
     private User setFoundUser(Optional<User> foundUser, User user) throws UserNotFoundException {
 
         if (foundUser.isPresent()) {
             foundUser.get().setLastModifiedDate(LocalDate.now());
-            foundUser.get().setFirstName(user.getFirstName());
-            foundUser.get().setLastName((user.getLastName()));
             return userRepository.save(foundUser.get());
         } else {
             throw new UserNotFoundException();

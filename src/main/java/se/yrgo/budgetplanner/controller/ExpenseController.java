@@ -2,6 +2,8 @@ package se.yrgo.budgetplanner.controller;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import se.yrgo.budgetplanner.model.expense.Expense;
 import se.yrgo.budgetplanner.model.expense.ExpenseCategory;
@@ -32,7 +34,10 @@ public class ExpenseController {
 
     @GetMapping("/getall")
     List<Expense> getAllExpenses() {
-        return expenseService.getAllExpenses();
+
+        Authentication loggedInUser = SecurityContextHolder.getContext().getAuthentication();
+        return expenseService.getExpensesByUsername(loggedInUser.getName());
+
     }
 
     @PutMapping("/update/{id}")
@@ -52,9 +57,14 @@ public class ExpenseController {
     }
 
     @GetMapping("/getbystatus/{status}")
-    List<Expense> getExpensesByStatus(@PathVariable ExpenseStatus status) {
+    List<Expense> getExpensesByUsernameAndStatus(@PathVariable ExpenseStatus status) {
+
+        Authentication loggedInUser = SecurityContextHolder.getContext().getAuthentication();
+
         return expenseService.getExpensesByStatus(status);
     }
+
+
 
     @GetMapping("/getbycategory/{category}")
     List<Expense> getExpensesByCategory(@PathVariable ExpenseCategory category) {

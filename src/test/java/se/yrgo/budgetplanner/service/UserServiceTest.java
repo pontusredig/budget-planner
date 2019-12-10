@@ -41,8 +41,8 @@ public class UserServiceTest {
         MockitoAnnotations.initMocks(this);
         User user = new User();
         user.setId(1L);
-        User user1 = new User("Anders","Andersson","anders@abc.com", "password", DATE,DATE);
-        User user2 = new User("Alex","Andersson","anders@abc.com", "password", DATE,DATE);
+        User user1 = new User("anders@abc.com", "password", DATE,DATE);
+        User user2 = new User("anders@abc.com", "password", DATE,DATE);
 
         List<User> allUsers = Arrays.asList(user1,user2, user);
         when(userRepository.save(any(User.class))).thenReturn(user1);
@@ -58,10 +58,10 @@ public class UserServiceTest {
     @Test
     public void registerUser() throws UserExistsException {
         User aMockUser = new User();
-        aMockUser.setFirstName("Alexander");
+        aMockUser.setEmail("alexander@mail.com");
 //        when(userRepository.save(any(User.class))).thenReturn(aMockUser);
         User newUser = userService.registerUser(null);
-        assertEquals("Alexander", newUser.getFirstName());
+        assertEquals("Alexander", newUser.getEmail());
     }
 
 

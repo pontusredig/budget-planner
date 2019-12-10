@@ -1,14 +1,18 @@
 package se.yrgo.budgetplanner.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import se.yrgo.budgetplanner.model.expense.Expense;
 import se.yrgo.budgetplanner.model.expense.ExpenseCategory;
 import se.yrgo.budgetplanner.model.expense.ExpenseStatus;
+import se.yrgo.budgetplanner.model.user.User;
 import se.yrgo.budgetplanner.repository.ExpenseRepository;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ExpenseService {
@@ -16,7 +20,16 @@ public class ExpenseService {
     @Autowired
     ExpenseRepository expenseRepository;
 
+    @Autowired
+    UserService userService;
+
     public Expense saveExpense(Expense expense) {
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String owner = authentication.getName();
+        Optional<User> userOptional = Optional.ofNullable(userService.getUserByEmail(owner));
+        User user = userOptional.get();
+        expense.setUser(user);
         expense.setDate(LocalDate.now());
         expenseRepository.save(expense);
         return expense;
@@ -45,6 +58,10 @@ public class ExpenseService {
 
     public List<Expense> getExpensesByDate(LocalDate date) {
         return expenseRepository.findAllByDate(date);
+    }
+
+    public List<Expense> getExpensesByUsername(String username) {
+        return expenseRepository.findAllByUsername(username);
     }
 
     public List<Expense> getExpensesBetweenDates(LocalDate start, LocalDate end) {

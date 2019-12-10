@@ -6,7 +6,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-import se.yrgo.budgetplanner.service.UserNotFoundException;
 import se.yrgo.budgetplanner.service.UserService;
 
 import java.util.ArrayList;
@@ -23,12 +22,8 @@ public class JwtUserDetailsService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
-        Optional<se.yrgo.budgetplanner.model.user.User> userOptional = null;
-        try {
-            userOptional = Optional.ofNullable(userService.getUserByEmail(username));
-        } catch (UserNotFoundException e) {
-            e.printStackTrace();
-        }
+        Optional<se.yrgo.budgetplanner.model.user.User> userOptional = Optional.ofNullable(userService.getUserByEmail(username));
+
         if (userOptional.isPresent()) {
             se.yrgo.budgetplanner.model.user.User user = userOptional.get();
             return new User(user.getEmail(), user.getPassword(),
