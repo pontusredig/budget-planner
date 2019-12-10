@@ -5,33 +5,39 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import se.yrgo.budgetplanner.repository.UserRepository;
+import se.yrgo.budgetplanner.service.UserNotFoundException;
+import se.yrgo.budgetplanner.service.UserService;
 
 import java.util.ArrayList;
+import java.util.Optional;
 
 @Service
 public class JwtUserDetailsService implements UserDetailsService {
-    @Autowired
-    private UserRepository userRepository;
 
     @Autowired
-    private PasswordEncoder bcryptEncoder;
+    private UserService userService;
+
+
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        if ("javainuse".equals(username)) {
-            return new User("javainuse", "$2a$10$slYQmyNdGzTn7ZLBXBChFOC9f6kFjAqPhccnP6DxlWXx2lPk1C3G6",
+
+        Optional<se.yrgo.budgetplanner.model.user.User> userOptional = null;
+        try {
+            userOptional = Optional.ofNullable(userService.getUserByEmail(username));
+        } catch (UserNotFoundException e) {
+            e.printStackTrace();
+        }
+        if (userOptional.isPresent()) {
+            se.yrgo.budgetplanner.model.user.User user = userOptional.get();
+            return new User(user.getEmail(), user.getPassword(),
                     new ArrayList<>());
         } else {
-            throw new UsernameNotFoundException("User not found with username: " + username);
+            throw new UsernameNotFoundException("User " + username + " not found.");
         }
     }
-    public User save(User user) {
-        User newUser = new User();
-        newUser.setUsername(user.getUsername());
-        newUser.setPassword(bcryptEncoder.encode(user.getPassword()));
-        return userRepository.save(newUser);
-    }
+
+
 }
+
