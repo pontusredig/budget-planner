@@ -1,4 +1,4 @@
-package se.yrgo.budgetplanner.service;
+package se.yrgo.budgetplanner.exceptions;
 
 public class UserNotFoundException extends Exception
 {
