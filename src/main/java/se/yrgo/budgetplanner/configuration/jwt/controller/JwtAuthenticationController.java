@@ -12,6 +12,7 @@ import se.yrgo.budgetplanner.configuration.jwt.config.JwtTokenUtil;
 import se.yrgo.budgetplanner.configuration.jwt.model.JwtRequest;
 import se.yrgo.budgetplanner.configuration.jwt.model.JwtResponse;
 import se.yrgo.budgetplanner.configuration.jwt.service.JwtUserDetailsService;
+import se.yrgo.budgetplanner.model.user.User;
 
 @RestController
 @CrossOrigin
@@ -39,7 +40,12 @@ public class JwtAuthenticationController {
         return ResponseEntity.ok(new JwtResponse(token));
     }
 
-    private void authenticate(String username, String password) throws Exception {
+    @RequestMapping(value = "/register", method = RequestMethod.POST)
+    public ResponseEntity<?> saveUser(@RequestBody User user) throws Exception {
+        return ResponseEntity.ok(userDetailsService.save(user));
+        }
+
+        private void authenticate(String username, String password) throws Exception {
         try {
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
         } catch (DisabledException e) {
