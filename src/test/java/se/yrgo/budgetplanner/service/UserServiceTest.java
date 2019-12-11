@@ -10,6 +10,8 @@ import org.mockito.internal.verification.VerificationModeFactory;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringRunner;
+import se.yrgo.budgetplanner.exceptions.UserExistsException;
+import se.yrgo.budgetplanner.exceptions.UserNotFoundException;
 import se.yrgo.budgetplanner.model.user.User;
 import se.yrgo.budgetplanner.repository.UserRepository;
 
@@ -34,7 +36,7 @@ public class UserServiceTest {
     UserRepository userRepository;
 
     @InjectMocks
-    UserServiceImpl userService;
+    UserService userService;
 
     @Before
     public void setUp() {

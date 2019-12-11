@@ -1,22 +1,23 @@
 package se.yrgo.budgetplanner.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import se.yrgo.budgetplanner.exceptions.UserExistsException;
 import se.yrgo.budgetplanner.exceptions.UserNotFoundException;
 import se.yrgo.budgetplanner.model.user.User;
 import se.yrgo.budgetplanner.repository.UserRepository;
 
-import javax.transaction.Transactional;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
-@Transactional
 @Service
 public class UserService {
-    private BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
+
+    @Autowired
+    PasswordEncoder passwordEncoder;
+
 
     @Autowired
     UserRepository userRepository;
@@ -26,7 +27,7 @@ public class UserService {
         if (userSearch == null) {
             user.setCreationDate(LocalDate.now());
             user.setLastModifiedDate(LocalDate.now());
-            user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
+            user.setPassword(passwordEncoder.encode(user.getPassword()));
             User newUser = userRepository.save(user);
             return newUser;
         } else {
@@ -59,7 +60,7 @@ public class UserService {
         Optional<User> foundUser = Optional.ofNullable(userRepository.findByEmail(user.getEmail()));
         if (foundUser.isPresent()) {
             foundUser.get().setLastModifiedDate(LocalDate.now());
-            foundUser.get().setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
+            foundUser.get().setPassword(passwordEncoder.encode(user.getPassword()));
             return userRepository.save(foundUser.get());
         } else {
             throw new UserNotFoundException();
