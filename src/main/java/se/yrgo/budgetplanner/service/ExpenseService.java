@@ -56,13 +56,6 @@ public class ExpenseService {
         return expenseRepository.getOne(id);
     }
 
-    public List<Expense> getExpensesByDate(LocalDate date) {
-        return expenseRepository.findAllByDate(date);
-    }
-
-    public List<Expense> getExpensesByUsername(String username) {
-        return expenseRepository.findAllByUsername(username);
-    }
 
     public List<Expense> getExpensesBetweenDates(LocalDate start, LocalDate end) {
         return expenseRepository.findAllByDateBetween(start, end);

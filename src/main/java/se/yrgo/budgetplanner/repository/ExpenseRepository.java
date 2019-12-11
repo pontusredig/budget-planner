@@ -13,10 +13,11 @@ import java.util.List;
 @Repository
 public interface ExpenseRepository extends JpaRepository<Expense, Long> {
 
-    List<Expense> findAllByDate(LocalDate date);
+//    @Query("SELECT exp FROM Expense exp WHERE exp.user.email = ?1")
+//    List<Expense> findAllByUsername(String username);
 
-    @Query("select exp from Expense exp where exp.user.email = ?1")
-    List<Expense> findAllByUsername(String username);
+    @Query("SELECT exp FROM Expense exp WHERE exp.user.email = :#{ principal?.username }")
+    List<Expense> findAll();
 
     List<Expense> findAllByDateBetween(LocalDate start, LocalDate end);
 
@@ -24,13 +25,15 @@ public interface ExpenseRepository extends JpaRepository<Expense, Long> {
 
     List<Expense> findAllByExpenseCategory(ExpenseCategory category);
 
-    @Query(value = "SELECT sum(amount) FROM Expense")
+    @Query(value = "SELECT SUM(exp.amount) FROM Expense exp WHERE exp.user.email = :#{ principal?.username }")
     Long totalAmount();
 
-    @Query("SELECT sum(exp.amount) from Expense exp where exp.expenseStatus = ?1")
+    @Query("SELECT SUM(exp.amount) FROM Expense exp WHERE exp.expenseStatus = ?1 " +
+            "AND exp.user.email = :#{ principal?.username }")
     Long totalAmountByStatus(ExpenseStatus status);
 
-    @Query("SELECT sum(exp.amount) from Expense exp where exp.expenseCategory = ?1")
+    @Query("SELECT SUM(exp.amount) FROM Expense exp WHERE exp.expenseCategory = ?1 " +
+            "AND exp.user.email = :#{ principal?.username }")
     Long totalAmountByCategory(ExpenseCategory category);
 
 }
