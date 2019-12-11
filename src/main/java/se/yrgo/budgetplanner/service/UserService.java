@@ -1,23 +1,101 @@
 package se.yrgo.budgetplanner.service;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
+import se.yrgo.budgetplanner.exceptions.UserExistsException;
+import se.yrgo.budgetplanner.exceptions.UserNotFoundException;
 import se.yrgo.budgetplanner.model.user.User;
+import se.yrgo.budgetplanner.repository.UserRepository;
 
+import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
-public interface UserService {
-    User registerUser(User user) throws UserExistsException;
+@Service
+public class UserService {
 
-    void removeUserById(Long id) throws UserNotFoundException;
+    @Autowired
+    PasswordEncoder passwordEncoder;
 
-    User updateProfileById(Long id, User user) throws UserNotFoundException;
 
-    User updateProfile(User user) throws UserNotFoundException;
+    @Autowired
+    UserRepository userRepository;
 
-    List<User> getAllUsers();
+    public User registerUser(User user) throws UserExistsException {
+        User userSearch = userRepository.findByEmail(user.getEmail());
+        if (userSearch == null) {
+            user.setCreationDate(LocalDate.now());
+            user.setLastModifiedDate(LocalDate.now());
+            user.setPassword(passwordEncoder.encode(user.getPassword()));
+            User newUser = userRepository.save(user);
+            return newUser;
+        } else {
+            throw new UserExistsException();
+        }
+    }
 
-    User getUserById(Long id) throws UserNotFoundException;
+    public void removeUserById(Long id) throws UserNotFoundException {
+        Optional<User> foundUser = userRepository.findById(id);
 
-    User getUserByEmail(String email);
+        if (foundUser.isPresent()) {
+            userRepository.deleteById(id);
+        } else {
+            throw new UserNotFoundException();
+        }
+    }
 
+    public User updateProfileById(Long id, User user) throws UserNotFoundException {
+        Optional<User> foundUser = userRepository.findById(id);
+        user.setId(id);
+        return setFoundUser(foundUser, user);
+    }
+
+    public User updateProfile(User user) throws UserNotFoundException {
+        Optional<User> foundUser = Optional.ofNullable(userRepository.findByEmail(user.getEmail()));
+        return setFoundUser(foundUser, user);
+    }
+
+    public User changePassword(User user) throws UserNotFoundException {
+        Optional<User> foundUser = Optional.ofNullable(userRepository.findByEmail(user.getEmail()));
+        if (foundUser.isPresent()) {
+            foundUser.get().setLastModifiedDate(LocalDate.now());
+            foundUser.get().setPassword(passwordEncoder.encode(user.getPassword()));
+            return userRepository.save(foundUser.get());
+        } else {
+            throw new UserNotFoundException();
+        }
+    }
+
+    public List<User> getAllUsers() {
+        return userRepository.findAll();
+    }
+
+    public User getUserById(Long id) throws UserNotFoundException {
+        Optional<User> foundUser = userRepository.findById(id);
+        if (foundUser.isPresent()) {
+            return foundUser.get();
+        } else {
+            throw new UserNotFoundException();
+        }
+    }
+
+    public User getUserByEmail(String email) {
+        Optional<User> foundUser = Optional.ofNullable(userRepository.findByEmail(email));
+        if (foundUser.isPresent()) {
+            return foundUser.get();
+        }
+       else {
+            return null;
+        }
+    }
+
+    private User setFoundUser(Optional<User> foundUser, User user) throws UserNotFoundException {
+        if (foundUser.isPresent()) {
+            foundUser.get().setLastModifiedDate(LocalDate.now());
+            return userRepository.save(foundUser.get());
+        } else {
+            throw new UserNotFoundException();
+        }
+    }
 }
-
