@@ -32,13 +32,6 @@ public class ExpenseController {
         System.out.println("Deleted expense.");
     }
 
-//    @GetMapping("/getall")
-//    List<Expense> getAllExpenses() {
-//
-//        Authentication loggedInUser = SecurityContextHolder.getContext().getAuthentication();
-//        return expenseService.getExpensesByUsername(loggedInUser.getName());
-//
-//    }
 
     @GetMapping("/getall")
     List<Expense> getAllExpenses() {

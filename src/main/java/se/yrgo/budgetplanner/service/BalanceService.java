@@ -57,8 +57,9 @@ public class BalanceService {
 
     }
 
-    public Balance subtractExpensefromBalance(Expense expense) {
+    public Balance subtractExpenseFromBalance(Expense expense) {
         Balance newBalance = new Balance();
+        newBalance.setBalanceCategory(BalanceCategory.EXPENDABLE);
         newBalance.setAmount(getCurrentBalance(BalanceCategory.EXPENDABLE).subtract(expense.getAmount()));
         saveBalance(newBalance);
         return newBalance;
@@ -70,16 +71,15 @@ public class BalanceService {
     }
 
     public BigDecimal getCurrentBalance(BalanceCategory balanceCategory) {
-        Pageable pageable = PageRequest.of(0,1);
+        Pageable pageable = PageRequest.of(0, 1);
+        List<BigDecimal> currentBalance = balanceRepository.getCurrentBalance(pageable, balanceCategory).getContent();
         if (balanceRepository.getCurrentBalance(pageable, balanceCategory).getContent().isEmpty()) {
-            setInitialBalances();
+            return new BigDecimal("0");
+        } else {
+            return balanceRepository.getCurrentBalance(pageable, balanceCategory).getContent().get(0);
         }
-        return balanceRepository.getCurrentBalance(pageable, balanceCategory).getContent().get(0);
+
     }
 
-    public void setInitialBalances() {
-        saveBalance(new Balance(new BigDecimal("0"), BalanceCategory.EXPENDABLE));
-        saveBalance(new Balance(new BigDecimal("0"), BalanceCategory.SAVINGS));
-    }
 
 }

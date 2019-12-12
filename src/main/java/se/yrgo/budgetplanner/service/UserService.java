@@ -1,6 +1,8 @@
 package se.yrgo.budgetplanner.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import se.yrgo.budgetplanner.exceptions.UserExistsException;
@@ -97,5 +99,12 @@ public class UserService {
         } else {
             throw new UserNotFoundException();
         }
+    }
+
+    public User getLoggedInUser() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String owner = authentication.getName();
+        Optional<User> userOptional = Optional.ofNullable(getUserByEmail(owner));
+        return userOptional.get();
     }
 }
