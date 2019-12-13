@@ -1,6 +1,7 @@
 package se.yrgo.budgetplanner.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import se.yrgo.budgetplanner.exceptions.UserExistsException;
@@ -19,83 +20,86 @@ public class UserService {
     PasswordEncoder passwordEncoder;
 
 
+    private BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+
     @Autowired
     UserRepository userRepository;
 
-    public User registerUser(User user) throws UserExistsException {
+    public User registerUser(User user) {
         User userSearch = userRepository.findByEmail(user.getEmail());
-        if (userSearch == null) {
-            user.setCreationDate(LocalDate.now());
-            user.setLastModifiedDate(LocalDate.now());
-            user.setPassword(passwordEncoder.encode(user.getPassword()));
-            User newUser = userRepository.save(user);
-            return newUser;
-        } else {
+        System.out.println("userSearch " + userSearch);
+        if (userSearch != null) {
             throw new UserExistsException();
         }
+
+        user.setCreationDate(LocalDate.now());
+        user.setLastModifiedDate(LocalDate.now());
+//        user.setPassword(passwordEncoder.encode(test));
+        user.setPassword(encoder.encode(user.getPassword()));
+        return userRepository.save(user);
+
     }
 
-    public void removeUserById(Long id) throws UserNotFoundException {
+    public void removeUserById(Long id) {
         Optional<User> foundUser = userRepository.findById(id);
-
-        if (foundUser.isPresent()) {
-            userRepository.deleteById(id);
-        } else {
+        if (!foundUser.isPresent()) {
             throw new UserNotFoundException();
         }
+        userRepository.deleteById(id);
     }
 
-    public User updateProfileById(Long id, User user) throws UserNotFoundException {
+    public User updateProfileById(Long id, User user) {
         Optional<User> foundUser = userRepository.findById(id);
         user.setId(id);
         return setFoundUser(foundUser, user);
     }
 
-    public User updateProfile(User user) throws UserNotFoundException {
+    public User updateProfile(User user)  {
         Optional<User> foundUser = Optional.ofNullable(userRepository.findByEmail(user.getEmail()));
         return setFoundUser(foundUser, user);
     }
 
-    public User changePassword(User user) throws UserNotFoundException {
+    public User changePassword(User user)  {
         Optional<User> foundUser = Optional.ofNullable(userRepository.findByEmail(user.getEmail()));
-        if (foundUser.isPresent()) {
-            foundUser.get().setLastModifiedDate(LocalDate.now());
-            foundUser.get().setPassword(passwordEncoder.encode(user.getPassword()));
-            return userRepository.save(foundUser.get());
-        } else {
+        if (!foundUser.isPresent()) {
             throw new UserNotFoundException();
         }
+
+        foundUser.get().setLastModifiedDate(LocalDate.now());
+        foundUser.get().setPassword(passwordEncoder.encode(user.getPassword()));
+        return userRepository.save(foundUser.get());
     }
 
     public List<User> getAllUsers() {
         return userRepository.findAll();
     }
 
-    public User getUserById(Long id) throws UserNotFoundException {
-        Optional<User> foundUser = userRepository.findById(id);
-        if (foundUser.isPresent()) {
-            return foundUser.get();
-        } else {
-            throw new UserNotFoundException();
-        }
+    public User getUserById(Long id) {
+//        Optional<User> foundUser = userRepository.findById(id);
+//        if (foundUser.isPresent()) {
+//            return foundUser.get();
+//        } else {
+//            throw new UserNotFoundException();
+//        }
+        return userRepository.findById(id)
+                .orElseThrow(() -> new UserNotFoundException("User with '" + id + "' does no exist"));
+
     }
 
     public User getUserByEmail(String email) {
         Optional<User> foundUser = Optional.ofNullable(userRepository.findByEmail(email));
-        if (foundUser.isPresent()) {
-            return foundUser.get();
-        }
-       else {
-            return null;
-        }
-    }
-
-    private User setFoundUser(Optional<User> foundUser, User user) throws UserNotFoundException {
-        if (foundUser.isPresent()) {
-            foundUser.get().setLastModifiedDate(LocalDate.now());
-            return userRepository.save(foundUser.get());
-        } else {
+        if (!foundUser.isPresent()) {
             throw new UserNotFoundException();
         }
+        return foundUser.get();
+    }
+
+    private User setFoundUser(Optional<User> foundUser, User user){
+        if (!foundUser.isPresent()) {
+            throw new UserNotFoundException();
+        }
+
+        foundUser.get().setLastModifiedDate(LocalDate.now());
+        return userRepository.save(foundUser.get());
     }
 }
