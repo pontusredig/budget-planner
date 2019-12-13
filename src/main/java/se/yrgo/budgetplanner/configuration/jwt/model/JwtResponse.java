@@ -1,17 +1,14 @@
 package se.yrgo.budgetplanner.configuration.jwt.model;
 
-import java.io.Serializable;
+public class JwtResponse {
 
-public class JwtResponse implements Serializable {
+    private final String jwt;
 
-    private static final long serialVersionUID = -8091879091924046844L;
-    private final String jwttoken;
-
-    public JwtResponse(String jwttoken) {
-        this.jwttoken = jwttoken;
+    public JwtResponse(String jwt) {
+        this.jwt = jwt;
     }
 
     public String getToken() {
-        return this.jwttoken;
+        return this.jwt;
     }
 }

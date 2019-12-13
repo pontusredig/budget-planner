@@ -15,8 +15,17 @@ public class IncomeService {
     @Autowired
     IncomeRepository incomeRepository;
 
+    @Autowired
+    BalanceService balanceService;
+
+    @Autowired
+    UserService userService;
+
     public Income saveIncome(Income income) {
+
+        income.setUser(userService.getLoggedInUser());
         income.setDate(LocalDate.now());
+        balanceService.addIncomeToBalance(income);
         incomeRepository.save(income);
         return income;
     }
@@ -57,7 +66,6 @@ public class IncomeService {
     public Long getTotalByStatus(IncomeStatus status) {
         return incomeRepository.totalAmountByStatus(status);
     }
-
 
 
 }

@@ -32,12 +32,10 @@ public class ExpenseController {
         System.out.println("Deleted expense.");
     }
 
+
     @GetMapping("/getall")
     List<Expense> getAllExpenses() {
-
-        Authentication loggedInUser = SecurityContextHolder.getContext().getAuthentication();
-        return expenseService.getExpensesByUsername(loggedInUser.getName());
-
+        return expenseService.getAllExpenses();
     }
 
     @PutMapping("/update/{id}")
@@ -46,10 +44,6 @@ public class ExpenseController {
         return expense;
     }
 
-    @GetMapping("/getbydate/{date}")
-    List<Expense> getExpensesByDate(@PathVariable LocalDate date) {
-        return expenseService.getExpensesByDate(date);
-    }
 
     @GetMapping("/getbetweendates/{start}/{end}")
     List<Expense> getExpensesBetweenDates(@PathVariable LocalDate start, @PathVariable LocalDate end) {
