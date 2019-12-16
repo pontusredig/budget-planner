@@ -1,6 +1,8 @@
 package se.yrgo.budgetplanner.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -27,7 +29,6 @@ public class UserService {
 
     public User registerUser(User user) {
         User userSearch = userRepository.findByEmail(user.getEmail());
-        System.out.println("userSearch " + userSearch);
         if (userSearch != null) {
             throw new UserExistsException();
         }
@@ -42,6 +43,7 @@ public class UserService {
 
     public void removeUserById(Long id) {
         Optional<User> foundUser = userRepository.findById(id);
+        System.out.println(foundUser);
         if (!foundUser.isPresent()) {
             throw new UserNotFoundException();
         }
@@ -75,15 +77,8 @@ public class UserService {
     }
 
     public User getUserById(Long id) {
-//        Optional<User> foundUser = userRepository.findById(id);
-//        if (foundUser.isPresent()) {
-//            return foundUser.get();
-//        } else {
-//            throw new UserNotFoundException();
-//        }
         return userRepository.findById(id)
                 .orElseThrow(() -> new UserNotFoundException("User with '" + id + "' does no exist"));
-
     }
 
     public User getUserByEmail(String email) {
@@ -95,6 +90,7 @@ public class UserService {
     }
 
     private User setFoundUser(Optional<User> foundUser, User user){
+        System.out.println("Print"+foundUser.get());
         if (!foundUser.isPresent()) {
             throw new UserNotFoundException();
         }
@@ -102,4 +98,12 @@ public class UserService {
         foundUser.get().setLastModifiedDate(LocalDate.now());
         return userRepository.save(foundUser.get());
     }
+
+    public User getLoggedInUser() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String owner = authentication.getName();
+        Optional<User> userOptional = Optional.ofNullable(getUserByEmail(owner));
+        return userOptional.get();
+    }
+
 }

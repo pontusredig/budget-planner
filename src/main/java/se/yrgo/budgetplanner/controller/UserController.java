@@ -2,11 +2,8 @@ package se.yrgo.budgetplanner.controller;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import se.yrgo.budgetplanner.model.user.User;
-import se.yrgo.budgetplanner.exceptions.UserExistsException;
-import se.yrgo.budgetplanner.exceptions.UserNotFoundException;
 import se.yrgo.budgetplanner.service.UserService;
 
 import java.util.List;
@@ -14,32 +11,31 @@ import java.util.List;
 @RestController
 @RequestMapping("/users")
 public class UserController {
-    private BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
 
     @Autowired
     UserService userService;
 
     @PostMapping("/add")
-    public User addUser(@RequestBody User user) throws UserExistsException{
+    public User addUser(@RequestBody User user){
         return userService.registerUser(user);
     }
 
     @DeleteMapping("/delete/{id}")
-    public void deleteUserById(@PathVariable Long id) throws UserNotFoundException {
+    public void deleteUserById(@PathVariable Long id)  {
         userService.removeUserById(id);
     }
 
     @PutMapping("/update/{id}")
-    public User updateUserById(@RequestBody User user, @PathVariable Long id ) throws UserNotFoundException {
+    public User updateUserById(@RequestBody User user, @PathVariable Long id )  {
 
         return userService.updateProfileById(id,user);
     }
     @PutMapping("/update")
-    public User updateUser(@RequestBody User user) throws UserNotFoundException {
+    public User updateUser(@RequestBody User user)  {
         return userService.updateProfile(user);
     }
     @PutMapping("/update/password")
-    public User updateUserPassword(@RequestBody User user) throws UserNotFoundException {
+    public User updateUserPassword(@RequestBody User user)  {
         return userService.changePassword(user);
     }
 
@@ -49,7 +45,7 @@ public class UserController {
     }
 
     @GetMapping("/id/{id}")
-    public User getUserById(@PathVariable Long id) throws UserNotFoundException{
+    public User getUserById(@PathVariable Long id) {
             return userService.getUserById(id);
     }
 

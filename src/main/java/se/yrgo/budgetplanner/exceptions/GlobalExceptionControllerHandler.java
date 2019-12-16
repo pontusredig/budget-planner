@@ -16,7 +16,7 @@ public class GlobalExceptionControllerHandler {
     @ResponseStatus(HttpStatus.CONFLICT)
     @ExceptionHandler(UserNotFoundException.class)
     public void handleException(UserNotFoundException e) {
-        System.out.println("UserNotFoundException triggered");
+        System.out.println("No user with that email exists in the database!!!");
     }
 
     @ResponseStatus(HttpStatus.CONFLICT)
@@ -37,4 +37,10 @@ public class GlobalExceptionControllerHandler {
         mav.setViewName(DEFAULT_ERROR_VIEW);
         return mav;
     }
+
+    public Exception throwException(Exception e){
+        return throwException(e);
+    }
+
+
 }
