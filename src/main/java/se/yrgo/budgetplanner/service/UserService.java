@@ -43,7 +43,6 @@ public class UserService {
 
     public void removeUserById(Long id) {
         Optional<User> foundUser = userRepository.findById(id);
-        System.out.println(foundUser);
         if (!foundUser.isPresent()) {
             throw new UserNotFoundException();
         }
