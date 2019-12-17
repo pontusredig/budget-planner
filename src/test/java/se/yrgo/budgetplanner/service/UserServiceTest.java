@@ -116,10 +116,10 @@ public class UserServiceTest {
     }
 
     @Test
-    public void removeUserById() {
-        when(userRepository.findById(user.getId())).thenReturn(null);
+    public void TestDeleteUserById() {
+        when(userRepository.findById(user.getId())).thenReturn(Optional.of(new User()));
         userService.removeUserById(user.getId());
-        verifyDeleteIsCalledOnce(user1.getId());
+        verifyDeleteIsCalledOnce(user.getId());
     }
 
 
