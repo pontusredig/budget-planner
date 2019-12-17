@@ -77,7 +77,7 @@ public class UserService {
 
     public User getUserById(Long id) {
         return userRepository.findById(id)
-                .orElseThrow(() -> new UserNotFoundException("User with '" + id + "' does no exist"));
+                .orElseThrow(() -> new UserNotFoundException("User with id '" + id + "' does no exist"));
     }
 
     public User getUserByEmail(String email) {

@@ -1,22 +1,16 @@
 package se.yrgo.budgetplanner.exceptions;
 
-import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.context.request.WebRequest;
-import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
-
-import javax.servlet.http.HttpServletRequest;
 
 @ControllerAdvice
 public class GlobalExceptionControllerHandler extends ResponseEntityExceptionHandler {
-
     public static final String DEFAULT_ERROR_VIEW = "error";
 
     @Override
@@ -35,36 +29,25 @@ public class GlobalExceptionControllerHandler extends ResponseEntityExceptionHan
         return buildResponseEntity(new ApiError(HttpStatus.NOT_FOUND, error, e));
     }
 
-
-
-    @ResponseStatus(HttpStatus.CONFLICT)
-    @ExceptionHandler(UserNotFoundException.class)
-    public void handleException(UserNotFoundException e) {
-        System.out.println("No user with that email exists in the database!!!");
+    @ExceptionHandler({UserNotFoundException.class, UserExistsException.class})
+    public ResponseEntity<Object> RuntimeExceptionHandler(RuntimeException e) {
+        String exceptionName = e.getClass().getSimpleName();
+        boolean userExists = exceptionName.equals("UserExistsException");
+        boolean userNotFound = exceptionName.equals("UserNotFoundException");
+        String error = null;
+        HttpStatus status = null;
+        if (userExists) {
+            error = "User exists";
+            status = HttpStatus.CONFLICT;
+        }
+        else if (userNotFound) {
+            error = "User couldn't be found";
+            status = HttpStatus.NOT_FOUND;
+        }
+        return buildResponseEntity(new ApiError(status, error, e));
     }
 
-    @ResponseStatus(HttpStatus.CONFLICT)
-    @ExceptionHandler(UserExistsException.class)
-    public void handleException(UserExistsException e) {
-        System.out.println("You already have a user with that email and password!!!");
-    }
-
-    //Default Exception.class
-    @ExceptionHandler(value = Exception.class)
-    public ModelAndView defaultErrorHandler(HttpServletRequest req, Exception e) throws Exception {
-        if (AnnotationUtils.findAnnotation
-                (e.getClass(), ResponseStatus.class) != null)
-            throw e;
-        ModelAndView mav = new ModelAndView();
-        mav.addObject("exception", e);
-        mav.addObject("url", req.getRequestURL());
-        mav.setViewName(DEFAULT_ERROR_VIEW);
-        return mav;
-    }
-
-    public Exception throwException(Exception e){
+    public Exception throwException(Exception e) {
         return throwException(e);
     }
-
-
 }
