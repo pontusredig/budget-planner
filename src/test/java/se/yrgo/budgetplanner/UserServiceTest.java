@@ -1,4 +1,4 @@
-package se.yrgo.budgetplanner.service;
+package se.yrgo.budgetplanner;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -12,6 +12,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import se.yrgo.budgetplanner.exceptions.UserNotFoundException;
 import se.yrgo.budgetplanner.model.user.User;
 import se.yrgo.budgetplanner.repository.UserRepository;
+import se.yrgo.budgetplanner.service.UserService;
 
 import javax.transaction.Transactional;
 import java.time.LocalDate;
