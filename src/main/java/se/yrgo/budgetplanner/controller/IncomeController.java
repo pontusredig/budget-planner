@@ -2,11 +2,11 @@ package se.yrgo.budgetplanner.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import se.yrgo.budgetplanner.exceptions.EntityNotFoundException;
 import se.yrgo.budgetplanner.model.income.Income;
 import se.yrgo.budgetplanner.model.income.IncomeStatus;
 import se.yrgo.budgetplanner.service.IncomeService;
 
-import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -23,31 +23,31 @@ public class IncomeController {
     }
 
     @DeleteMapping("/delete/{id}")
-    void deleteIncome(@PathVariable Long id) {
+    void deleteIncome(@PathVariable Long id) throws EntityNotFoundException {
         incomeService.deleteIncome(id);
         System.out.println("Deleted income.");
     }
 
     @GetMapping("/getall")
-    List<Income> getAllIncomes() {
+    List<Income> getAllIncomes() throws EntityNotFoundException {
         return incomeService.getAllIncomes();
     }
 
     @PutMapping("/update/{id}")
-    Income updateIncome(@RequestBody Income income, @PathVariable Long id) {
+    Income updateIncome(@RequestBody Income income, @PathVariable Long id) throws EntityNotFoundException {
         incomeService.updateIncome(income, id);
         return income;
     }
 
-    @GetMapping("/getbydate/{date}")
-    List<Income> getIncomesByDate(@PathVariable LocalDate date) {
-        return incomeService.getIncomesByDate(date);
-    }
-
-    @GetMapping("/getbetweendates/{start}/{end}")
-    List<Income> getIncomesByDateBetween(@PathVariable LocalDate start, @PathVariable LocalDate end) {
-        return incomeService.getIncomesBetweenDates(start, end);
-    }
+//    @GetMapping("/getbydate/{date}")
+//    List<Income> getIncomesByDate(@PathVariable LocalDate date) {
+//        return incomeService.getIncomesByDate(date);
+//    }
+//
+//    @GetMapping("/getbetweendates/{start}/{end}")
+//    List<Income> getIncomesByDateBetween(@PathVariable LocalDate start, @PathVariable LocalDate end) {
+//        return incomeService.getIncomesBetweenDates(start, end);
+//    }
 
     @GetMapping("/gettotal")
     Long getTotal() {

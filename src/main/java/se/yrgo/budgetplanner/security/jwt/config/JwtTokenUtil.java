@@ -1,4 +1,4 @@
-package se.yrgo.budgetplanner.configuration.jwt.config;
+package se.yrgo.budgetplanner.security.jwt.config;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;

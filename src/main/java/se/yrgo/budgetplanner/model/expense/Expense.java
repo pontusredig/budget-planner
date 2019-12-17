@@ -4,6 +4,7 @@ import lombok.Data;
 import se.yrgo.budgetplanner.model.user.User;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
@@ -14,12 +15,15 @@ public class Expense {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+    @NotNull(message = "Amount is a required field.")
     private BigDecimal amount;
+    @NotNull(message = "Category is a required field.")
     @Enumerated(EnumType.STRING)
     private ExpenseCategory expenseCategory;
     private String name;
     private LocalDate date;
     private LocalDate dueDate;
+    @NotNull(message = "Status is a required field.")
     @Enumerated(EnumType.STRING)
     private ExpenseStatus expenseStatus;
     @ManyToOne

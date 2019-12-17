@@ -1,4 +1,4 @@
-package se.yrgo.budgetplanner.configuration.jwt.controller;
+package se.yrgo.budgetplanner.security.jwt.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -8,10 +8,10 @@ import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
-import se.yrgo.budgetplanner.configuration.jwt.config.JwtTokenUtil;
-import se.yrgo.budgetplanner.configuration.jwt.model.JwtRequest;
-import se.yrgo.budgetplanner.configuration.jwt.model.JwtResponse;
-import se.yrgo.budgetplanner.configuration.jwt.service.JwtUserDetailsService;
+import se.yrgo.budgetplanner.security.jwt.config.JwtTokenUtil;
+import se.yrgo.budgetplanner.security.jwt.model.JwtRequest;
+import se.yrgo.budgetplanner.security.jwt.model.JwtResponse;
+import se.yrgo.budgetplanner.security.jwt.service.JwtUserDetailsService;
 
 @RestController
 @CrossOrigin

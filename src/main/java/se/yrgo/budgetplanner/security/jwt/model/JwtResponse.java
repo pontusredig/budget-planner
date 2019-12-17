@@ -1,4 +1,4 @@
-package se.yrgo.budgetplanner.configuration.jwt.model;
+package se.yrgo.budgetplanner.security.jwt.model;
 
 public class JwtResponse {
 

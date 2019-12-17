@@ -1,4 +1,4 @@
-package se.yrgo.budgetplanner.configuration;
+package se.yrgo.budgetplanner.security;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -15,8 +15,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.data.repository.query.SecurityEvaluationContextExtension;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import se.yrgo.budgetplanner.configuration.jwt.config.JwtAuthenticationEntryPoint;
-import se.yrgo.budgetplanner.configuration.jwt.config.JwtRequestFilter;
+import se.yrgo.budgetplanner.security.jwt.config.JwtAuthenticationEntryPoint;
+import se.yrgo.budgetplanner.security.jwt.config.JwtRequestFilter;
 
 @Configuration
 @EnableWebSecurity
@@ -59,6 +59,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .antMatchers("/", "/users/**").permitAll()
                 .antMatchers("/authenticate").permitAll().
                 anyRequest().authenticated().and().
+
                 exceptionHandling().authenticationEntryPoint(jwtAuthenticationEntryPoint).and().sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         httpSecurity.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);

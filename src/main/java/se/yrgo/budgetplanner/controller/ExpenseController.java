@@ -2,15 +2,13 @@ package se.yrgo.budgetplanner.controller;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
+import se.yrgo.budgetplanner.exceptions.EntityNotFoundException;
 import se.yrgo.budgetplanner.model.expense.Expense;
 import se.yrgo.budgetplanner.model.expense.ExpenseCategory;
 import se.yrgo.budgetplanner.model.expense.ExpenseStatus;
 import se.yrgo.budgetplanner.service.ExpenseService;
 
-import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -27,43 +25,43 @@ public class ExpenseController {
     }
 
     @DeleteMapping("/delete/{id}")
-    void deleteExpense(@PathVariable Long id) {
+    void deleteExpense(@PathVariable Long id) throws EntityNotFoundException {
         expenseService.deleteExpense(id);
         System.out.println("Deleted expense.");
     }
 
 
     @GetMapping("/getall")
-    List<Expense> getAllExpenses() {
+    List<Expense> getAllExpenses() throws EntityNotFoundException {
         return expenseService.getAllExpenses();
     }
 
     @PutMapping("/update/{id}")
-    Expense updateExpense(@RequestBody Expense expense, @PathVariable Long id) {
+    Expense updateExpense(@RequestBody Expense expense, @PathVariable Long id) throws EntityNotFoundException {
         expenseService.updateExpense(expense, id);
         return expense;
     }
 
 
-    @GetMapping("/getbetweendates/{start}/{end}")
-    List<Expense> getExpensesBetweenDates(@PathVariable LocalDate start, @PathVariable LocalDate end) {
-        return expenseService.getExpensesBetweenDates(start, end);
-    }
-
-    @GetMapping("/getbystatus/{status}")
-    List<Expense> getExpensesByUsernameAndStatus(@PathVariable ExpenseStatus status) {
-
-        Authentication loggedInUser = SecurityContextHolder.getContext().getAuthentication();
-
-        return expenseService.getExpensesByStatus(status);
-    }
-
-
-
-    @GetMapping("/getbycategory/{category}")
-    List<Expense> getExpensesByCategory(@PathVariable ExpenseCategory category) {
-        return expenseService.getExpensesByCategory(category);
-    }
+//    @GetMapping("/getbetweendates/{start}/{end}")
+//    List<Expense> getExpensesBetweenDates(@PathVariable LocalDate start, @PathVariable LocalDate end) {
+//        return expenseService.getExpensesBetweenDates(start, end);
+//    }
+//
+//    @GetMapping("/getbystatus/{status}")
+//    List<Expense> getExpensesByUsernameAndStatus(@PathVariable ExpenseStatus status) {
+//
+//        Authentication loggedInUser = SecurityContextHolder.getContext().getAuthentication();
+//
+//        return expenseService.getExpensesByStatus(status);
+//    }
+//
+//
+//
+//    @GetMapping("/getbycategory/{category}")
+//    List<Expense> getExpensesByCategory(@PathVariable ExpenseCategory category) {
+//        return expenseService.getExpensesByCategory(category);
+//    }
 
     @GetMapping("/gettotal")
     Long getTotal() {

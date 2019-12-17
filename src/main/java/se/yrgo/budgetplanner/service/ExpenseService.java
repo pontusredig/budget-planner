@@ -2,6 +2,7 @@ package se.yrgo.budgetplanner.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import se.yrgo.budgetplanner.exceptions.EntityNotFoundException;
 import se.yrgo.budgetplanner.model.expense.Expense;
 import se.yrgo.budgetplanner.model.expense.ExpenseCategory;
 import se.yrgo.budgetplanner.model.expense.ExpenseStatus;
@@ -39,15 +40,31 @@ public class ExpenseService {
 
     public void deleteExpense(Long id) {
         Expense deleteThisExpense = expenseRepository.getOne(id);
+
+        if (deleteThisExpense == null) {
+            throw new EntityNotFoundException();
+        }
+
         expenseRepository.delete(deleteThisExpense);
     }
 
     public List<Expense> getAllExpenses() {
-        return expenseRepository.findAll();
+
+        List<Expense> allExpenses = expenseRepository.findAll();
+
+        if (allExpenses.isEmpty()) {
+            throw new EntityNotFoundException("No expenses added yet!");
+        }
+
+        return allExpenses;
     }
 
     public Expense updateExpense(Expense expense, Long id) {
         Expense updateThisExpense = expenseRepository.findByIdAndUser(id);
+
+        if (updateThisExpense == null) {
+            throw new EntityNotFoundException();
+        }
 
 
         // If expense is changed from UNPAID to PAID, subtract amount from balance
@@ -64,21 +81,27 @@ public class ExpenseService {
 
 
     public Expense getExpenseById(Long id) {
-        return expenseRepository.getOne(id);
+        Expense foundExpense = expenseRepository.findByIdAndUser(id);
+
+        if (foundExpense == null) {
+            throw new EntityNotFoundException();
+        }
+
+        return foundExpense;
     }
 
 
-    public List<Expense> getExpensesBetweenDates(LocalDate start, LocalDate end) {
-        return expenseRepository.findAllByDateBetween(start, end);
-    }
-
-    public List<Expense> getExpensesByStatus(ExpenseStatus status) {
-        return expenseRepository.findAllByExpenseStatus(status);
-    }
-
-    public List<Expense> getExpensesByCategory(ExpenseCategory category) {
-        return expenseRepository.findAllByExpenseCategory(category);
-    }
+//    public List<Expense> getExpensesBetweenDates(LocalDate start, LocalDate end) {
+//        return expenseRepository.findAllByDateBetween(start, end);
+//    }
+//
+//    public List<Expense> getExpensesByStatus(ExpenseStatus status) {
+//        return expenseRepository.findAllByExpenseStatus(status);
+//    }
+//
+//    public List<Expense> getExpensesByCategory(ExpenseCategory category) {
+//        return expenseRepository.findAllByExpenseCategory(category);
+//    }
 
     public Long getTotal() {
         return expenseRepository.totalAmount();

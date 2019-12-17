@@ -1,4 +1,4 @@
-package se.yrgo.budgetplanner.configuration.jwt.config;
+package se.yrgo.budgetplanner.security.jwt.config;
 
 import io.jsonwebtoken.ExpiredJwtException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,7 +8,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
-import se.yrgo.budgetplanner.configuration.jwt.service.JwtUserDetailsService;
+import se.yrgo.budgetplanner.security.jwt.service.JwtUserDetailsService;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
