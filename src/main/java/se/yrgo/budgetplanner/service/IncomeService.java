@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import se.yrgo.budgetplanner.exceptions.EntityNotFoundException;
 import se.yrgo.budgetplanner.model.income.Income;
+import se.yrgo.budgetplanner.model.income.IncomeCategory;
 import se.yrgo.budgetplanner.model.income.IncomeStatus;
 import se.yrgo.budgetplanner.repository.IncomeRepository;
 
@@ -73,6 +74,35 @@ public class IncomeService {
         return incomeRepository.getOne(id);
     }
 
+
+    public List<Income> getIncomesBetweenDates(LocalDate start, LocalDate end) {
+        List<Income> incomesBetweenDates = incomeRepository.findAllByDateBetween(start, end);
+
+        if (incomesBetweenDates.isEmpty()) {
+            throw new EntityNotFoundException();
+        }
+        return incomesBetweenDates;
+    }
+
+    public List<Income> getIncomesByStatus(IncomeStatus status) {
+        List<Income> incomesByStatus = incomeRepository.findAllByIncomeStatus(status);
+
+        if (incomesByStatus.isEmpty()) {
+            throw new EntityNotFoundException();
+        }
+        return incomesByStatus;
+
+    }
+
+    public List<Income> getIncomesByCategory(IncomeCategory category) {
+        List<Income> incomesByCategory = incomeRepository.findAllByIncomeCategory(category);
+
+        if (incomesByCategory.isEmpty()) {
+            throw new EntityNotFoundException();
+        }
+        return incomesByCategory;
+    }
+
     public Long getTotal() {
         return incomeRepository.totalAmount();
     }
@@ -81,13 +111,9 @@ public class IncomeService {
         return incomeRepository.totalAmountByStatus(status);
     }
 
-    //    public List<Income> getIncomesByDate(LocalDate date) {
-//        return incomeRepository.findAllByDate(date);
-//    }
-//
-//    public List<Income> getIncomesBetweenDates(LocalDate start, LocalDate end) {
-//        return incomeRepository.findAllByDateBetween(start, end);
-//    }
+    public Long getTotalByCategory(IncomeCategory category) {
+        return incomeRepository.totalAmountByCategory(category);
+    }
 
 
 }

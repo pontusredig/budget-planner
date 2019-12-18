@@ -4,9 +4,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import se.yrgo.budgetplanner.exceptions.EntityNotFoundException;
 import se.yrgo.budgetplanner.model.income.Income;
+import se.yrgo.budgetplanner.model.income.IncomeCategory;
 import se.yrgo.budgetplanner.model.income.IncomeStatus;
 import se.yrgo.budgetplanner.service.IncomeService;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -33,21 +35,32 @@ public class IncomeController {
         return incomeService.getAllIncomes();
     }
 
+
+    @GetMapping("/getbyid/{id}")
+    Income getIncomeById(@PathVariable Long id) throws EntityNotFoundException {
+        return incomeService.getIncomeById(id);
+    }
+
     @PutMapping("/update/{id}")
     Income updateIncome(@RequestBody Income income, @PathVariable Long id) throws EntityNotFoundException {
         incomeService.updateIncome(income, id);
         return income;
     }
 
-//    @GetMapping("/getbydate/{date}")
-//    List<Income> getIncomesByDate(@PathVariable LocalDate date) {
-//        return incomeService.getIncomesByDate(date);
-//    }
-//
-//    @GetMapping("/getbetweendates/{start}/{end}")
-//    List<Income> getIncomesByDateBetween(@PathVariable LocalDate start, @PathVariable LocalDate end) {
-//        return incomeService.getIncomesBetweenDates(start, end);
-//    }
+    @GetMapping("/getbetweendates/{start}/{end}")
+    List<Income> getIncomesByDateBetween(@PathVariable LocalDate start, @PathVariable LocalDate end) {
+        return incomeService.getIncomesBetweenDates(start, end);
+    }
+
+    @GetMapping("/getbystatus/{status}")
+    List<Income> getIncomesByUsernameAndStatus(@PathVariable IncomeStatus status) {
+        return incomeService.getIncomesByStatus(status);
+    }
+
+    @GetMapping("/getbycategory/{category}")
+    List<Income> getIncomesByCategory(@PathVariable IncomeCategory category) {
+        return incomeService.getIncomesByCategory(category);
+    }
 
     @GetMapping("/gettotal")
     Long getTotal() {
@@ -57,6 +70,11 @@ public class IncomeController {
     @GetMapping("/gettotalbystatus/{status}")
     Long getTotalByStatus(@PathVariable IncomeStatus status) {
         return incomeService.getTotalByStatus(status);
+    }
+
+    @GetMapping("/gettotalbycategory/{category}")
+    Long getTotalByCategory(@PathVariable IncomeCategory category) {
+        return incomeService.getTotalByCategory(category);
     }
 
 

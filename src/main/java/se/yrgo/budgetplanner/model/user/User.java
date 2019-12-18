@@ -26,8 +26,14 @@ public class User {
         this.email = email;
         this.password = password;
         this.creationDate = creationDate;
-        this.lastModifiedDate=lastModifiedDate;
+        this.lastModifiedDate= lastModifiedDate;
     }
+
+    public User(String email, String password) {
+        this.email = email;
+        this.password = password;
+    }
+
     public User() {}
 
     @Override
