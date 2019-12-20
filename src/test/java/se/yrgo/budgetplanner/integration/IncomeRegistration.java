@@ -13,10 +13,12 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.web.client.RestTemplate;
+import se.yrgo.budgetplanner.model.balance.Balance;
 import se.yrgo.budgetplanner.model.income.Income;
 import se.yrgo.budgetplanner.model.income.IncomeCategory;
 import se.yrgo.budgetplanner.model.income.IncomeStatus;
 import se.yrgo.budgetplanner.model.user.User;
+import se.yrgo.budgetplanner.repository.BalanceRepository;
 import se.yrgo.budgetplanner.repository.IncomeRepository;
 import se.yrgo.budgetplanner.security.jwt.config.JwtTokenUtil;
 import se.yrgo.budgetplanner.security.jwt.model.JwtRequest;
@@ -46,6 +48,8 @@ public class IncomeRegistration {
 
     @Autowired
     IncomeRepository incomeRepository;
+    @Autowired
+    BalanceRepository balanceRepository;
     @Autowired
     JwtTokenUtil jwtTokenUtil;
     @Autowired
@@ -87,13 +91,20 @@ public class IncomeRegistration {
                 .postForEntity("http://localhost:" + port + "/income/add", request, Income.class);
 
         Income verifyThisIncome = incomeRepository.getOne(3L);
+        Balance verifyThisBalance = balanceRepository.getOne(2L);
 
+        // Verify Income object has been stored correctly
         assertEquals(verifyThisIncome.getAmount(), AMOUNT);
         assertEquals(verifyThisIncome.getIncomeCategory(), CATEGORY);
         assertEquals(verifyThisIncome.getName(), NAME);
         assertEquals(verifyThisIncome.getDate(), DATE);
         assertEquals(verifyThisIncome.getIncomeStatus(), STATUS);
         assertEquals(verifyThisIncome.getUser().getEmail(), testUser.getEmail());
+
+        // Verify that storing expandable Income updates Balance accordingly
+        assertEquals(verifyThisIncome.getAmount(), verifyThisBalance.getAmount());
+        assertEquals(verifyThisIncome.getDate(), verifyThisBalance.getDate());
+        assertEquals(verifyThisIncome.getUser().getEmail(), verifyThisBalance.getUser().getEmail());
 
     }
 

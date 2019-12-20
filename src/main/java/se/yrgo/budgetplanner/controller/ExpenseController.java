@@ -48,19 +48,20 @@ public class ExpenseController {
     }
 
     @GetMapping("/getbetweendates/{start}/{end}")
-    List<Expense> getExpensesBetweenDates(@PathVariable LocalDate start, @PathVariable LocalDate end) {
+    List<Expense> getExpensesBetweenDates(@PathVariable LocalDate start, @PathVariable LocalDate end)
+            throws EntityNotFoundException {
         return expenseService.getExpensesBetweenDates(start, end);
     }
 
 
     @GetMapping("/getbystatus/{status}")
-    List<Expense> getExpensesByUsernameAndStatus(@PathVariable ExpenseStatus status) {
+    List<Expense> getExpensesByUsernameAndStatus(@PathVariable ExpenseStatus status) throws EntityNotFoundException {
         return expenseService.getExpensesByStatus(status);
     }
 
 
     @GetMapping("/getbycategory/{category}")
-    List<Expense> getExpensesByCategory(@PathVariable ExpenseCategory category) {
+    List<Expense> getExpensesByCategory(@PathVariable ExpenseCategory category) throws EntityNotFoundException {
         return expenseService.getExpensesByCategory(category);
     }
 
@@ -70,12 +71,12 @@ public class ExpenseController {
     }
 
     @GetMapping("/gettotalbystatus/{status}")
-    Long getTotalByStatus(@PathVariable ExpenseStatus status) {
+    Long getTotalByStatus(@PathVariable ExpenseStatus status) throws EntityNotFoundException {
         return expenseService.getTotalByStatus(status);
     }
 
     @GetMapping("/gettotalbycategory/{category}")
-    Long getTotalByCategory(@PathVariable ExpenseCategory category) {
+    Long getTotalByCategory(@PathVariable ExpenseCategory category) throws EntityNotFoundException {
         return expenseService.getTotalByCategory(category);
     }
 

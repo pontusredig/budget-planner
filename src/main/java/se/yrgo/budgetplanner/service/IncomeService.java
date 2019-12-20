@@ -104,15 +104,37 @@ public class IncomeService {
     }
 
     public Long getTotal() {
-        return incomeRepository.totalAmount();
+
+        Long totalAmount = incomeRepository.totalAmount();
+
+        if (totalAmount == null) {
+            throw new EntityNotFoundException();
+        }
+
+        return totalAmount;
     }
 
     public Long getTotalByStatus(IncomeStatus status) {
-        return incomeRepository.totalAmountByStatus(status);
+
+        Long totalByStatus = incomeRepository.totalAmountByStatus(status);
+
+        if (totalByStatus == null) {
+            throw new EntityNotFoundException();
+        }
+
+        return totalByStatus;
     }
 
     public Long getTotalByCategory(IncomeCategory category) {
-        return incomeRepository.totalAmountByCategory(category);
+
+        Long totalByCategory = incomeRepository.totalAmountByCategory(category);
+
+        if (totalByCategory == null) {
+            throw new EntityNotFoundException();
+        }
+
+        return totalByCategory;
+
     }
 
 

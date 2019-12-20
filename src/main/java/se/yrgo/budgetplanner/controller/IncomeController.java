@@ -48,32 +48,33 @@ public class IncomeController {
     }
 
     @GetMapping("/getbetweendates/{start}/{end}")
-    List<Income> getIncomesByDateBetween(@PathVariable LocalDate start, @PathVariable LocalDate end) {
+    List<Income> getIncomesByDateBetween(@PathVariable LocalDate start, @PathVariable LocalDate end)
+            throws EntityNotFoundException {
         return incomeService.getIncomesBetweenDates(start, end);
     }
 
     @GetMapping("/getbystatus/{status}")
-    List<Income> getIncomesByUsernameAndStatus(@PathVariable IncomeStatus status) {
+    List<Income> getIncomesByUsernameAndStatus(@PathVariable IncomeStatus status) throws EntityNotFoundException {
         return incomeService.getIncomesByStatus(status);
     }
 
     @GetMapping("/getbycategory/{category}")
-    List<Income> getIncomesByCategory(@PathVariable IncomeCategory category) {
+    List<Income> getIncomesByCategory(@PathVariable IncomeCategory category) throws EntityNotFoundException {
         return incomeService.getIncomesByCategory(category);
     }
 
     @GetMapping("/gettotal")
-    Long getTotal() {
+    Long getTotal() throws EntityNotFoundException {
         return incomeService.getTotal();
     }
 
     @GetMapping("/gettotalbystatus/{status}")
-    Long getTotalByStatus(@PathVariable IncomeStatus status) {
+    Long getTotalByStatus(@PathVariable IncomeStatus status) throws EntityNotFoundException {
         return incomeService.getTotalByStatus(status);
     }
 
     @GetMapping("/gettotalbycategory/{category}")
-    Long getTotalByCategory(@PathVariable IncomeCategory category) {
+    Long getTotalByCategory(@PathVariable IncomeCategory category) throws EntityNotFoundException {
         return incomeService.getTotalByCategory(category);
     }
 

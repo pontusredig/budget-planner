@@ -122,15 +122,37 @@ public class ExpenseService {
     }
 
     public Long getTotal() {
-        return expenseRepository.totalAmount();
+
+        Long totalAmount = expenseRepository.totalAmount();
+
+        if (totalAmount == null) {
+            throw new EntityNotFoundException();
+        }
+
+        return totalAmount;
     }
 
     public Long getTotalByStatus(ExpenseStatus status) {
-        return expenseRepository.totalAmountByStatus(status);
+
+        Long totalByStatus = expenseRepository.totalAmountByStatus(status);
+
+        if (totalByStatus == null) {
+            throw new EntityNotFoundException();
+        }
+
+        return totalByStatus;
     }
 
     public Long getTotalByCategory(ExpenseCategory category) {
-        return expenseRepository.totalAmountByCategory(category);
+
+        Long totalByCategory = expenseRepository.totalAmountByCategory(category);
+
+        if (totalByCategory == null) {
+            throw new EntityNotFoundException();
+        }
+
+        return totalByCategory;
+
     }
 
 
