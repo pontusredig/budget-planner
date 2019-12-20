@@ -78,7 +78,7 @@ public class UserServiceTest {
 
     @Test
     public void whenValidId_thenUserShouldBeFound() {
-        Long id = 1L;
+        Long id = 10L;
         User returnedUser = userService.getUserById(id);
         verifyFindByIdIsCalledOnce();
         assertEquals(id, returnedUser.getId());
