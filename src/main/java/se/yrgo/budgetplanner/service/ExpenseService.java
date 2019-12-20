@@ -23,6 +23,8 @@ public class ExpenseService {
     @Autowired
     UserService userService;
 
+
+
     public Expense saveExpense(Expense expense) {
 
 
@@ -91,28 +93,66 @@ public class ExpenseService {
     }
 
 
-//    public List<Expense> getExpensesBetweenDates(LocalDate start, LocalDate end) {
-//        return expenseRepository.findAllByDateBetween(start, end);
-//    }
-//
-//    public List<Expense> getExpensesByStatus(ExpenseStatus status) {
-//        return expenseRepository.findAllByExpenseStatus(status);
-//    }
-//
-//    public List<Expense> getExpensesByCategory(ExpenseCategory category) {
-//        return expenseRepository.findAllByExpenseCategory(category);
-//    }
+    public List<Expense> getExpensesBetweenDates(LocalDate start, LocalDate end) {
+        List<Expense> expensesBetweenDates = expenseRepository.findAllByDateBetween(start, end);
+
+        if (expensesBetweenDates.isEmpty()) {
+            throw new EntityNotFoundException();
+        }
+        return expensesBetweenDates;
+    }
+
+    public List<Expense> getExpensesByStatus(ExpenseStatus status) {
+        List<Expense> expensesByStatus = expenseRepository.findAllByExpenseStatus(status);
+
+        if (expensesByStatus.isEmpty()) {
+            throw new EntityNotFoundException();
+        }
+        return expensesByStatus;
+
+    }
+
+    public List<Expense> getExpensesByCategory(ExpenseCategory category) {
+        List<Expense> expensesByCategory = expenseRepository.findAllByExpenseCategory(category);
+
+        if (expensesByCategory.isEmpty()) {
+            throw new EntityNotFoundException();
+        }
+        return expensesByCategory;
+    }
 
     public Long getTotal() {
-        return expenseRepository.totalAmount();
+
+        Long totalAmount = expenseRepository.totalAmount();
+
+        if (totalAmount == null) {
+            throw new EntityNotFoundException();
+        }
+
+        return totalAmount;
     }
 
     public Long getTotalByStatus(ExpenseStatus status) {
-        return expenseRepository.totalAmountByStatus(status);
+
+        Long totalByStatus = expenseRepository.totalAmountByStatus(status);
+
+        if (totalByStatus == null) {
+            throw new EntityNotFoundException();
+        }
+
+        return totalByStatus;
     }
 
     public Long getTotalByCategory(ExpenseCategory category) {
-        return expenseRepository.totalAmountByCategory(category);
+
+        Long totalByCategory = expenseRepository.totalAmountByCategory(category);
+
+        if (totalByCategory == null) {
+            throw new EntityNotFoundException();
+        }
+
+        return totalByCategory;
+
     }
 
 

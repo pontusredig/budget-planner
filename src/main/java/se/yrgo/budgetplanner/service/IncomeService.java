@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import se.yrgo.budgetplanner.exceptions.EntityNotFoundException;
 import se.yrgo.budgetplanner.model.income.Income;
+import se.yrgo.budgetplanner.model.income.IncomeCategory;
 import se.yrgo.budgetplanner.model.income.IncomeStatus;
 import se.yrgo.budgetplanner.repository.IncomeRepository;
 
@@ -73,21 +74,68 @@ public class IncomeService {
         return incomeRepository.getOne(id);
     }
 
+
+    public List<Income> getIncomesBetweenDates(LocalDate start, LocalDate end) {
+        List<Income> incomesBetweenDates = incomeRepository.findAllByDateBetween(start, end);
+
+        if (incomesBetweenDates.isEmpty()) {
+            throw new EntityNotFoundException();
+        }
+        return incomesBetweenDates;
+    }
+
+    public List<Income> getIncomesByStatus(IncomeStatus status) {
+        List<Income> incomesByStatus = incomeRepository.findAllByIncomeStatus(status);
+
+        if (incomesByStatus.isEmpty()) {
+            throw new EntityNotFoundException();
+        }
+        return incomesByStatus;
+
+    }
+
+    public List<Income> getIncomesByCategory(IncomeCategory category) {
+        List<Income> incomesByCategory = incomeRepository.findAllByIncomeCategory(category);
+
+        if (incomesByCategory.isEmpty()) {
+            throw new EntityNotFoundException();
+        }
+        return incomesByCategory;
+    }
+
     public Long getTotal() {
-        return incomeRepository.totalAmount();
+
+        Long totalAmount = incomeRepository.totalAmount();
+
+        if (totalAmount == null) {
+            throw new EntityNotFoundException();
+        }
+
+        return totalAmount;
     }
 
     public Long getTotalByStatus(IncomeStatus status) {
-        return incomeRepository.totalAmountByStatus(status);
+
+        Long totalByStatus = incomeRepository.totalAmountByStatus(status);
+
+        if (totalByStatus == null) {
+            throw new EntityNotFoundException();
+        }
+
+        return totalByStatus;
     }
 
-    //    public List<Income> getIncomesByDate(LocalDate date) {
-//        return incomeRepository.findAllByDate(date);
-//    }
-//
-//    public List<Income> getIncomesBetweenDates(LocalDate start, LocalDate end) {
-//        return incomeRepository.findAllByDateBetween(start, end);
-//    }
+    public Long getTotalByCategory(IncomeCategory category) {
+
+        Long totalByCategory = incomeRepository.totalAmountByCategory(category);
+
+        if (totalByCategory == null) {
+            throw new EntityNotFoundException();
+        }
+
+        return totalByCategory;
+
+    }
 
 
 }

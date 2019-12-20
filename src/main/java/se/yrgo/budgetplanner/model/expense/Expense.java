@@ -42,4 +42,13 @@ public class Expense {
 
     public Expense() {
     }
+
+    public Expense(BigDecimal amount, ExpenseCategory category, String name, LocalDate date, LocalDate due_date, ExpenseStatus status) {
+        this.amount = amount;
+        this.expenseCategory = expenseCategory;
+        this.name = name;
+        this.date = date;
+        this.dueDate = dueDate;
+        this.expenseStatus = expenseStatus;
+    }
 }

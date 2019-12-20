@@ -1,7 +1,6 @@
 package se.yrgo.budgetplanner.model.income;
 
 import lombok.Data;
-import org.springframework.format.annotation.NumberFormat;
 import se.yrgo.budgetplanner.model.user.User;
 
 import javax.persistence.*;
@@ -17,24 +16,25 @@ public class Income {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     @NotNull(message = "Amount is a required field.")
-    @NumberFormat
     private BigDecimal amount;
-    @Enumerated(EnumType.STRING)
     @NotNull(message = "Category is a required field.")
+    @Enumerated(EnumType.STRING)
     private IncomeCategory incomeCategory;
     private String name;
     private LocalDate date;
-    @Enumerated(EnumType.STRING)
     @NotNull(message = "Status is a required field.")
+    @Enumerated(EnumType.STRING)
     private IncomeStatus incomeStatus;
     @ManyToOne
     @JoinColumn
     private User user;
 
-    public Income(BigDecimal amount, IncomeCategory incomeCategory, String name) {
+    public Income(BigDecimal amount, IncomeCategory incomeCategory, String name, LocalDate date, IncomeStatus incomeStatus) {
         this.amount = amount;
         this.incomeCategory = incomeCategory;
         this.name = name;
+        this.date = date;
+        this.incomeStatus = incomeStatus;
     }
 
     public Income() {
