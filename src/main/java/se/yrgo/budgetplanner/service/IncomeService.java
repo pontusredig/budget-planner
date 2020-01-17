@@ -26,7 +26,6 @@ public class IncomeService {
     public Income saveIncome(Income income) {
 
         income.setUser(userService.getLoggedInUser());
-        income.setDate(LocalDate.now());
         balanceService.addIncomeToBalance(income);
         incomeRepository.save(income);
         return income;
@@ -60,7 +59,9 @@ public class IncomeService {
         }
 
         income.setId(id);
+        income.setUser(userService.getLoggedInUser());
         incomeRepository.save(income);
+        System.out.println(income);
         return income;
     }
 

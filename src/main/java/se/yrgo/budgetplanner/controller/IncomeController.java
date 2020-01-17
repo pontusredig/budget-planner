@@ -30,6 +30,7 @@ public class IncomeController {
         System.out.println("Deleted income.");
     }
 
+//    @CrossOrigin(origins = "*", allowedHeaders = "*")
     @GetMapping("/getall")
     List<Income> getAllIncomes() throws EntityNotFoundException {
         return incomeService.getAllIncomes();
@@ -43,6 +44,7 @@ public class IncomeController {
 
     @PutMapping("/update/{id}")
     Income updateIncome(@RequestBody Income income, @PathVariable Long id) throws EntityNotFoundException {
+        System.out.println(income.toString());
         incomeService.updateIncome(income, id);
         return income;
     }

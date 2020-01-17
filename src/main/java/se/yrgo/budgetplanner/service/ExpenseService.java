@@ -29,7 +29,6 @@ public class ExpenseService {
 
 
         expense.setUser(userService.getLoggedInUser());
-        expense.setDate(LocalDate.now());
 
         if (expense.getExpenseStatus() == ExpenseStatus.PAID) {
             balanceService.subtractExpenseFromBalance(expense);
