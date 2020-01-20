@@ -9,6 +9,7 @@ import se.yrgo.budgetplanner.model.expense.ExpenseStatus;
 import se.yrgo.budgetplanner.repository.ExpenseRepository;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -22,7 +23,6 @@ public class ExpenseService {
 
     @Autowired
     UserService userService;
-
 
 
     public Expense saveExpense(Expense expense) {
@@ -40,12 +40,14 @@ public class ExpenseService {
 
 
     public void deleteExpense(Long id) {
-        Expense deleteThisExpense = expenseRepository.getOne(id);
+        Expense deleteThisExpense = expenseRepository.findByIdAndUser(id);
 
         if (deleteThisExpense == null) {
             throw new EntityNotFoundException();
         }
 
+
+        balanceService.deleteExpenseFromBalance(deleteThisExpense);
         expenseRepository.delete(deleteThisExpense);
     }
 
@@ -154,5 +156,17 @@ public class ExpenseService {
 
     }
 
+    public List<ExpenseCategory> getAllCategories() {
 
+        List<ExpenseCategory> categories = new ArrayList<>();
+
+        for (ExpenseCategory ctg : ExpenseCategory.values()) {
+            categories.add(ctg);
+        }
+
+        return categories;
+    }
 }
+
+
+

@@ -5,6 +5,7 @@ public enum IncomeCategory {
     SALARY,
     BENEFIT,
     SALE,
-    LOAN
+    LOAN,
+    OTHER
 
 }

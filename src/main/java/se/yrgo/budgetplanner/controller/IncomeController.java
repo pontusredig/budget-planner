@@ -27,10 +27,10 @@ public class IncomeController {
     @DeleteMapping("/delete/{id}")
     void deleteIncome(@PathVariable Long id) throws EntityNotFoundException {
         incomeService.deleteIncome(id);
-        System.out.println("Deleted income.");
+
+
     }
 
-//    @CrossOrigin(origins = "*", allowedHeaders = "*")
     @GetMapping("/getall")
     List<Income> getAllIncomes() throws EntityNotFoundException {
         return incomeService.getAllIncomes();
@@ -78,6 +78,11 @@ public class IncomeController {
     @GetMapping("/gettotalbycategory/{category}")
     Long getTotalByCategory(@PathVariable IncomeCategory category) throws EntityNotFoundException {
         return incomeService.getTotalByCategory(category);
+    }
+
+    @GetMapping("/categories")
+    List<IncomeCategory> incomeCategories() throws EntityNotFoundException {
+        return incomeService.getAllCategories();
     }
 
 

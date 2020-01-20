@@ -9,6 +9,7 @@ import se.yrgo.budgetplanner.model.income.IncomeStatus;
 import se.yrgo.budgetplanner.repository.IncomeRepository;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -32,12 +33,13 @@ public class IncomeService {
     }
 
     public void deleteIncome(Long id) {
-        Income deleteThisIncome = incomeRepository.getOne(id);
+        Income deleteThisIncome = incomeRepository.findByIdAndUser(id);
 
         if (deleteThisIncome == null) {
             throw new EntityNotFoundException();
         }
 
+        balanceService.deleteIncomeFromBalance(deleteThisIncome);
         incomeRepository.delete(deleteThisIncome);
     }
 
@@ -61,7 +63,6 @@ public class IncomeService {
         income.setId(id);
         income.setUser(userService.getLoggedInUser());
         incomeRepository.save(income);
-        System.out.println(income);
         return income;
     }
 
@@ -136,6 +137,17 @@ public class IncomeService {
 
         return totalByCategory;
 
+    }
+
+    public List<IncomeCategory> getAllCategories() {
+
+        List<IncomeCategory> categories = new ArrayList<>();
+
+        for (IncomeCategory ctg : IncomeCategory.values()) {
+            categories.add(ctg);
+        }
+
+        return categories;
     }
 
 

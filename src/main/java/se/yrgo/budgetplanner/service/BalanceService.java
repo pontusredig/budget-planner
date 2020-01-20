@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import se.yrgo.budgetplanner.model.balance.Balance;
 import se.yrgo.budgetplanner.model.balance.BalanceCategory;
 import se.yrgo.budgetplanner.model.expense.Expense;
+import se.yrgo.budgetplanner.model.expense.ExpenseStatus;
 import se.yrgo.budgetplanner.model.income.Income;
 import se.yrgo.budgetplanner.model.income.IncomeStatus;
 import se.yrgo.budgetplanner.repository.BalanceRepository;
@@ -49,10 +50,43 @@ public class BalanceService {
 
     }
 
+    public Balance deleteIncomeFromBalance(Income income) {
+        Balance newBalance = new Balance();
+
+
+        if (income.getIncomeStatus() == IncomeStatus.EXPENDABLE) {
+            newBalance.setBalanceCategory(BalanceCategory.EXPENDABLE);
+            newBalance.setAmount(getCurrentBalance(BalanceCategory.EXPENDABLE).subtract(income.getAmount()));
+        } else {
+            newBalance.setBalanceCategory(BalanceCategory.SAVINGS);
+            newBalance.setAmount(getCurrentBalance(BalanceCategory.SAVINGS).subtract(income.getAmount()));
+        }
+
+        saveBalance(newBalance);
+        return newBalance;
+
+    }
+
+
+
+
+
+
     public Balance subtractExpenseFromBalance(Expense expense) {
         Balance newBalance = new Balance();
         newBalance.setBalanceCategory(BalanceCategory.EXPENDABLE);
         newBalance.setAmount(getCurrentBalance(BalanceCategory.EXPENDABLE).subtract(expense.getAmount()));
+        saveBalance(newBalance);
+        return newBalance;
+    }
+
+    public Balance deleteExpenseFromBalance(Expense expense) {
+        Balance newBalance = new Balance();
+
+        if (expense.getExpenseStatus() == ExpenseStatus.PAID)
+
+        newBalance.setBalanceCategory(BalanceCategory.EXPENDABLE);
+        newBalance.setAmount(getCurrentBalance(BalanceCategory.EXPENDABLE).add(expense.getAmount()));
         saveBalance(newBalance);
         return newBalance;
     }

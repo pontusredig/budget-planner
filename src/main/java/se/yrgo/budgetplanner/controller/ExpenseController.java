@@ -80,4 +80,9 @@ public class ExpenseController {
         return expenseService.getTotalByCategory(category);
     }
 
+    @GetMapping("/categories")
+    List<ExpenseCategory> expenseCategories() throws EntityNotFoundException {
+        return expenseService.getAllCategories();
+    }
+
 }
