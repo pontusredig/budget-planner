@@ -93,7 +93,10 @@ public class BalanceService {
 
     public List<Balance> getAll() {
         return balanceRepository.findAll();
+    }
 
+    public List<Balance> getAllByCategory(BalanceCategory balanceCategory) {
+        return balanceRepository.findAllByCategory(balanceCategory);
     }
 
     public BigDecimal getCurrentBalance(BalanceCategory balanceCategory) {

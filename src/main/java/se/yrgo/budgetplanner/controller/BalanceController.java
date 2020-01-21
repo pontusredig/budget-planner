@@ -25,10 +25,17 @@ public class BalanceController {
         return balanceService.getAll();
     }
 
+
+    @GetMapping("/getbycategory/{balanceCategory}")
+    List<Balance> getBalanceByCategory(@PathVariable BalanceCategory balanceCategory) {
+        return balanceService.getAllByCategory(balanceCategory);
+    }
+
     @GetMapping("/getcurrent/{balanceCategory}")
         BigDecimal getCurrentBalance(@PathVariable BalanceCategory balanceCategory) {
                 return balanceService.getCurrentBalance(balanceCategory);
     }
+
 
 
 

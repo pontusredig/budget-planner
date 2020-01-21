@@ -17,9 +17,14 @@ public interface BalanceRepository extends JpaRepository<Balance, Long> {
     @Query("SELECT bal FROM Balance bal WHERE bal.user.email = :#{ principal?.username }")
     List<Balance> findAll();
 
-    @Query(value = "SELECT bal.amount FROM Balance bal WHERE bal.balanceCategory = ?1 " +
-            "AND bal.user.email = :#{ principal?.username } ORDER BY bal.id DESC")
+    @Query("SELECT bal FROM Balance bal WHERE bal.balanceCategory = ?1 " +
+            "AND bal.user.email = :#{ principal?.username }")
+    List<Balance> findAllByCategory(BalanceCategory balanceCategory);
+
+//    @Query(value = "SELECT bal.amount FROM Balance bal WHERE bal.balanceCategory = ?1 " +
+//            "AND bal.user.email = :#{ principal?.username } ORDER BY bal.id DESC")
+//    Page<BigDecimal> getCurrentBalance(Pageable pageable, BalanceCategory balanceCategory);
+
+    @Query(value = "SELECT bal.amount FROM Balance bal WHERE bal.balanceCategory = ?1  ORDER BY bal.id DESC")
     Page<BigDecimal> getCurrentBalance(Pageable pageable, BalanceCategory balanceCategory);
-
-
 }
