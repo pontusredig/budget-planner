@@ -19,7 +19,6 @@ public class User {
     private String email;
     private String name;
     private String password;
-    private String matchingPassword;
     private LocalDate creationDate;
     private LocalDate lastModifiedDate;
 
