@@ -10,6 +10,7 @@ import se.yrgo.budgetplanner.model.balance.BalanceCategory;
 import se.yrgo.budgetplanner.service.BalanceService;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -29,6 +30,19 @@ public class BalanceController {
     @GetMapping("/getbycategory/{balanceCategory}")
     List<Balance> getBalanceByCategory(@PathVariable BalanceCategory balanceCategory) {
         return balanceService.getAllByCategory(balanceCategory);
+    }
+
+    @GetMapping("/getlatestsavings")
+    List<BigDecimal> getBalanceByCategory() {
+        List<Balance> allSavingsObjects =  balanceService.getAllByCategory(BalanceCategory.SAVINGS);
+        List<BigDecimal> allSavingsAmounts = new ArrayList<>();
+
+        for (Balance b : allSavingsObjects) {
+            allSavingsAmounts.add(b.getAmount());
+        }
+
+        return allSavingsAmounts;
+
     }
 
     @GetMapping("/getcurrent/{balanceCategory}")
